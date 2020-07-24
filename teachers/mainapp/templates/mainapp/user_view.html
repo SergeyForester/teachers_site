@@ -1,0 +1,128 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+
+    <div class="container mt-3  mb-5">
+        <div class="row">
+            <div class="main-content container-radius background-white mr-3 col-12 col-md-12 col-lg-7">
+                {#user's main content#}
+            </div>
+            <div style="height: fit-content" class="side-content container-radius background-white col-12 col-md-12 col-lg-4">
+                {#side bar user's content#}
+                <img src="http://via.placeholder.com/300x200/" alt="">
+            </div>
+        </div>
+    </div>
+    <script>
+        APIRequest('/api/v1/get/user/{{ user_id }}/', function (user) {
+
+
+            APIRequest(`/api/v1/get/user/{{ user_id }}/lessons/?lang={{ current_lang }}`, function (data) {
+                let coursesHtml = '';
+                let course_types = [];
+
+                for (let course of data) {
+                    console.log(course);
+                    course_types.push(course.lesson_type.course_type.name);
+                    coursesHtml += `
+                            <div class="teacher-course-item">
+                                <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
+                            </div>
+                        `
+                }
+                let course_types_html = '';
+                course_types = new Set(course_types);
+                for (let course_type of course_types) {
+                    course_types_html += `
+                            <div class="teacher-course-item">
+                                <h4>${course_type}</h4>
+                            </div>`
+                }
+
+                let teacher = '';
+                if (user.profile.is_teacher) {
+                    teacher = '{{ text.keywords.teacher }}';
+                } else {
+                    teacher = "{{ text.keywords.user }}";
+                }
+
+
+                console.log(`User: ${user.first_name}`);
+
+                console.log(user);
+                $('.main-content').html(`
+            <div class="user-view">
+                <div class="video-view">
+                    <video controls class="user-preview-video">
+                        <source src="${user.profile.video}">
+                    </video>
+                </div>
+                <div class="mt-3 user-view-overview">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="user-avatar">
+                                <img src="${user.profile.avatar}">
+                            </div>
+                            <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login}</h6>
+                        </div>
+                        <div class="col-6">
+                            <h3>${user.first_name} ${user.last_name}</h3>
+                            <h5 class="disabled">${teacher}</h5>
+                            <h5 class="disabled">${user.profile.location}</h5>
+                            <h5>{{ text.keywords.teaches }}</h5>
+                            <div class="mb-5 teacher-courses-list">
+                                ${course_types_html}
+                            </div>
+                        </div>
+                        <div class="col-3" style="text-align:right!important">
+                            <div style="margin-right:10px;">
+                                <span style="color:#fec400;">
+                                    ${user.profile.rating} <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row p-4">
+                        <h5>{{ text.keywords.about_me }}</h5>
+                        <p>${user.profile.bio}</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <h5>{{ text.keywords.teaches }}</h5>
+                        <div>${coursesHtml}</div>
+                    </div>
+                </div>
+            </div>
+
+                {#<div class="row">#}
+                {#    <div class="user-right-side col-lg-6 col-md-6 col-12">#}
+                {#        <div class="user-right-side-name">#}
+                {#            <h4 class="user-name">${user.first_name}</h4>#}
+                {#        </div>#}
+                {#        <div>#}
+                {#            <h5 class="disabled">${teacher}</h5>#}
+                {#        </div>#}
+                {#        <div class="user-right-side-avatar">#}
+                {#            <img src="${user.profile.avatar}">#}
+                {#        </div>#}
+                {#    </div>#}
+                {#    <div class="col-lg-6 col-md-6 col-12">#}
+                {#        <h4>{{ text.keywords.from }}: ${user.profile.starting_price}$</h4>#}
+                {#        <h6>{{ text.keywords.teaches }}</h6>#}
+                {#        <div class="mb-5 teacher-courses-list">#}
+                {#            ${coursesHtml}#}
+                {#        </div>#}
+                {#        <h5>${user.profile.location}</h5>#}
+                {#    </div>#}
+                {#</div>#}
+            </div>
+           `)
+            });
+        });
+    </script>
+    <script>
+        setTimeout(function () {
+            $('footer').css('position', "relative")
+        }, 500);
+    </script>
+{% endblock %}

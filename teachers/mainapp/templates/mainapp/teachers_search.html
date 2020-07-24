@@ -1,0 +1,66 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <div class="users">
+
+    </div>
+
+    <script>
+        APIRequest('/api/v1/get/users/?is_teacher=true&course_type={{ course }}', function (data) {
+            let users = $(".users");
+            for (let user of data) {
+                let teacher = '';
+                if (user.profile.is_teacher) {
+                    teacher = '{{ text.keywords.teacher }}';
+                } else {
+                    teacher = "{{ text.keywords.user }}";
+                }
+
+
+                APIRequest(`/api/v1/get/user/${user.id}/lessons/`, function (data) {
+                    let coursesHtml = '';
+
+                    for (let course of data) {
+                        console.log(course);
+                        coursesHtml += `
+                            <div class="teacher-course-item">
+                                ${course.name}
+                            </div>
+                        `
+                    }
+
+                    console.log(`User: ${user.first_name}`);
+                    users.append(`
+                    <div class="user">
+                        <a href="/user/${user.id}/">
+                            <div class="row">
+                                <div class="user-right-side col-lg-6 col-md-6 col-12">
+                                    <div class="user-right-side-name">
+                                        <h4 class="user-name">${user.first_name}</h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="disabled">${teacher}</h5>
+                                    </div>
+                                    <div class="user-right-side-avatar">
+                                        <img src="${user.profile.avatar}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <h4>{{ text.keywords.from }}: ${user.profile.starting_price}$</h4>
+
+                                    <h6>{{ text.keywords.teaches }}</h6>
+                                    <div class="mb-5 teacher-courses-list">
+                                        ${coursesHtml}
+                                    </div>
+
+                                    <h5>${user.profile.location}</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `)
+
+                });
+            }
+        });
+    </script>
+{% endblock %}

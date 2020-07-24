@@ -10,10 +10,13 @@ from django.dispatch import receiver
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	bio = models.TextField(max_length=500, blank=True)
-	location = models.CharField(max_length=30, blank=True)
+	location = models.CharField(max_length=100, blank=True)
 	rating = models.DecimalField(decimal_places=1, max_digits=3, max_length=30, default=0.0, null=True, blank=True)
 	birth_date = models.DateField(null=True, blank=True)
 	is_teacher = models.BooleanField(default=False)
+	avatar = models.FileField(upload_to='avatars', default='avatars/default.png')
+	video = models.FileField(upload_to='videos', null=True, blank=True)
+	starting_price = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
 
 	def __str__(self):
 		return self.user.first_name
@@ -44,6 +47,13 @@ class Lesson(models.Model):
 	name = models.CharField(max_length=100)
 	price = models.DecimalField(max_digits=7, decimal_places=2)
 	minutes = models.PositiveIntegerField()
+
+
+@receiver(post_save, sender=Lesson)
+def set_starting_price(sender, instance, **kwargs):
+	if instance.lesson_type.user.profile.starting_price > instance.price:
+		instance.lesson_type.user.profile.starting_price = instance.price
+		instance.lesson_type.user.profile.save()
 
 
 class TeacherTimetable(models.Model):

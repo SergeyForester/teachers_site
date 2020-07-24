@@ -11,21 +11,35 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
+        <option value="CSS File" />
         <option value="Python Script" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="ProjectId" id="1eckTWEKkh52wFIXC6oWm6WsvX1" />
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/media/avatars" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\avatars" />
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\video" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -39,7 +53,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.teachers">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="teachers" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,34 +119,25 @@
       <workItem from="1594628279261" duration="4645000" />
       <workItem from="1594745877232" duration="531000" />
       <workItem from="1594808029350" duration="3535000" />
+      <workItem from="1594811899087" duration="6286000" />
+      <workItem from="1594838122934" duration="665000" />
+      <workItem from="1594904715050" duration="544000" />
+      <workItem from="1594974077438" duration="15055000" />
+      <workItem from="1595058969729" duration="12964000" />
+      <workItem from="1595180346618" duration="925000" />
+      <workItem from="1595223928679" duration="7212000" />
+      <workItem from="1595263508448" duration="5164000" />
+      <workItem from="1595320699574" duration="6667000" />
+      <workItem from="1595332899180" duration="4202000" />
+      <workItem from="1595414136262" duration="5471000" />
+      <workItem from="1595575963637" duration="603000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apiapp/views.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apiapp/views.py</url>
-          <line>25</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apiapp/views.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/teachers$main.coverage" NAME="main Coverage Results" MODIFIED="1594810868010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/GitHub/python_projects/sqlviewer" />
+    <SUITE FILE_PATH="coverage/teachers$main.coverage" NAME="main Coverage Results" MODIFIED="1595415387339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/GitHub/python_projects/sqlviewer" />
   </component>
 </project>
