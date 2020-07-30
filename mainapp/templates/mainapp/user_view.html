@@ -17,38 +17,41 @@
                     <div class="timetable-column timetable-hours">
                         <div class="grid-item"></div>
                     </div>
-{#                    <div class="timetable-column">#}
-{#                        <div class="grid-item">#}
-{#                            Mn#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-vacant"></div>#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-booked"></div>#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-vacant"></div>#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-vacant"></div>#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-unavailable"></div>#}
-{#                        </div>#}
-{#                        <div class="grid-item">#}
-{#                            <div class="grid-item-booked"></div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    {#                    <div class="timetable-column">#}
+                    {#                        <div class="grid-item">#}
+                    {#                            Mn#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-vacant"></div>#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-booked"></div>#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-vacant"></div>#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-vacant"></div>#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-unavailable"></div>#}
+                    {#                        </div>#}
+                    {#                        <div class="grid-item">#}
+                    {#                            <div class="grid-item-booked"></div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
                 </div>
             </div>
         </div>
     </div>
     <script>
+        let days = [];
+        let hours = [];
         APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
             // creating timetable
-            let hours = [], i, j;
-            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0])+1; i++) {
+            hours = [];
+            let i, j;
+            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0]) + 1; i++) {
                 for (j = 0; j < 2; j++) {
                     hours.push(i + ":" + (j === 0 ? "00" : 30 * j));
                 }
@@ -66,12 +69,11 @@
             }
 
             // getting list of days
-            let days = getDates(new Date(), new Date().addDays(5));
+            days = getDates(new Date(), new Date().addDays(5));
             for (let day of days) {
-                $('.timetable').append(`<div class="timetable-column" id="${day}">
+                $('.timetable').append(`<div class="timetable-column" id="${day.toString().slice(0, 3)}">
                     <div class="grid-item">${day.toString().slice(0, 3)}</div>
-                </div>`)
-
+                </div>`);
             }
 
             APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
@@ -156,8 +158,55 @@
 
         APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
 
-            for (let booking of bookings) {
+            console.log(bookings);
 
+            for (let day of getDates(new Date(), new Date().addDays(5))) {
+                for (let hour of hours) {
+                    let gridCell = '';
+                    let hour_ = new Date(day);
+
+                    hour_.setHours(hour.split(':')[0]);
+                    hour_.setMinutes(hour.split(':')[1]);
+
+                    if (getBooking(day, hour_, bookings)) {
+                        gridCell = `
+                        <div class="grid-item">
+                            <div class="grid-item-booked"></div>
+                        </div>
+                        `;
+                    } else {
+                        gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-vacant"></div>
+                            </div>
+                        `;
+                    }
+
+                    $(`#${day.toString().slice(0, 3)}`).append(gridCell);
+
+                }
+            }
+
+            function getBooking(day, hour, bookings) {
+                for (let booking of bookings) {
+                    let bookingDate = new Date(booking.lesson_booking.datetime);
+
+                    let bookingDateDay = new Date(bookingDate);
+                    bookingDateDay.setHours(0, 0, 0, 0);
+                    day.setHours(0, 0, 0, 0);
+
+                    console.log(bookingDateDay.getTime() === day.getTime());
+                    hour.setMilliseconds(0);
+
+                    if (bookingDateDay.getTime() === day.getTime()) {
+                        console.log(hour)
+                        if (bookingDate.getTime() === hour.getTime()) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
             }
         });
     </script>

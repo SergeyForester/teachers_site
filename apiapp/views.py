@@ -8,8 +8,9 @@ from django.shortcuts import render, get_object_or_404
 from googletrans import Translator
 from rest_framework import viewsets
 
-from apiapp.serializers import UserSerializer, LessonSerializer, CourseTypeSerializer, LessonBookingSerializer
-from mainapp.models import LessonType, Lesson, CourseType, LessonBooking
+from apiapp.serializers import UserSerializer, LessonSerializer, CourseTypeSerializer, LessonBookingSerializer, \
+	TeacherTimetableBookingSerializer
+from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking
 from mainapp.strings import STRINGS
 
 
@@ -142,8 +143,12 @@ class UserLessonsView(viewsets.ModelViewSet):
 			return LessonBooking.objects.filter(user__id=self.kwargs['id'])
 
 
+
 class UserBookingsView(viewsets.ModelViewSet):
-	serializer_class = LessonBookingSerializer
+	serializer_class = TeacherTimetableBookingSerializer
 
 	def get_queryset(self):
-		return LessonBooking.objects.filter(user__id=self.kwargs['id'], datetime__gte=datetime.datetime.now())
+		date = datetime.datetime.today()
+		date = date.replace(hour=0, second=0, minute=0, microsecond=0)
+		print(TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date).query)
+		return TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date)

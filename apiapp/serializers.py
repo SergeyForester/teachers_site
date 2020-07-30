@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer
 
-from mainapp.models import Profile, Lesson, LessonType, CourseType, LessonBooking
+from mainapp.models import Profile, Lesson, LessonType, CourseType, LessonBooking, TeacherTimetableBooking
 
 
 class ProfileSerializer(ModelSerializer):
@@ -39,9 +39,18 @@ class LessonSerializer(ModelSerializer):
 		model = Lesson
 		fields = "__all__"
 
+
 class LessonBookingSerializer(ModelSerializer):
 	lesson_type = LessonSerializer(read_only=True)
 
 	class Meta:
 		model = LessonBooking
+		fields = "__all__"
+
+
+class TeacherTimetableBookingSerializer(ModelSerializer):
+	lesson_booking = LessonBookingSerializer(read_only=True)
+
+	class Meta:
+		model = TeacherTimetableBooking
 		fields = "__all__"
