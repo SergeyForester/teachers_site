@@ -7,7 +7,7 @@ STRINGS = {
 		'keywords': {
 			'teacher': "Учитель", 'teaches': 'Обучает', 'from': 'От', 'user': 'Пользователь',
 			'last_login': "Был последний раз в сети", 'about_me': "Обо мне",
-			'find_teacher': 'Найти преподавателя'
+			'find_teacher': 'Найти преподавателя', 'timetable': 'Расписание'
 		},
 		'profile': {
 			'upcoming_lessons': 'Предстоящие уроки', 'completed_lessons': 'Завершенные уроки',
@@ -23,7 +23,8 @@ STRINGS = {
 		         'input_message': 'Enter your subject of study'},
 		'keywords': {
 			'teacher': "Teacher", 'teaches': 'Teaches', 'from': 'From', 'user': 'User',
-			"last_login": 'Last login', 'about_me': "About me", 'find_teacher': 'Find teacher'
+			"last_login": 'Last login', 'about_me': "About me", 'find_teacher': 'Find teacher',
+			'timetable': 'Timetable'
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',

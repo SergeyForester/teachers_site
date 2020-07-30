@@ -1,2 +1,3 @@
 googletrans
+django-rest-framework
 django

@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -138,3 +140,10 @@ class UserLessonsView(viewsets.ModelViewSet):
 				return LessonBooking.objects.filter(is_completed=True, user__id=self.kwargs['id'])
 		else:
 			return LessonBooking.objects.filter(user__id=self.kwargs['id'])
+
+
+class UserBookingsView(viewsets.ModelViewSet):
+	serializer_class = LessonBookingSerializer
+
+	def get_queryset(self):
+		return LessonBooking.objects.filter(user__id=self.kwargs['id'], datetime__gte=datetime.datetime.now())

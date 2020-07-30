@@ -12,63 +12,73 @@
             <div style="height: fit-content"
                  class="side-content container-radius background-white col-12 col-md-12 col-lg-4">
                 {#side bar user's content#}
+                <h5>{{ text.keywords.timetable }}</h5>
                 <div class="timetable">
-                    <div class="time-column">
+                    <div class="timetable-column timetable-hours">
                         <div class="grid-item"></div>
-                        <div class="grid-item">
-                            00:00
-                        </div>
-                        <div class="grid-item">
-                            00:30
-                        </div>
-                        <div class="grid-item">
-                            01:00
-                        </div>
-                        <div class="grid-item">
-                            01:30
-                        </div>
-                        <div class="grid-item">
-                            02:00
-                        </div>
-                        <div class="grid-item">
-                            02:30
-                        </div>
                     </div>
-                    <div class="day-column">
-                        <div class="grid-item">
-                            Mn
-                        </div>
-                        <div class="grid-item">
-                            <div class="grid-item-vacant"></div>
-                        </div>
-                        <div class="grid-item">
-                            <div class="grid-item-booked"></div>
-                        </div>
-                         <div class="grid-item">
-                            <div class="grid-item-vacant"></div>
-                        </div>
-                         <div class="grid-item">
-                            <div class="grid-item-vacant"></div>
-                        </div>
-                         <div class="grid-item">
-                            <div class="grid-item-vacant"></div>
-                        </div>
-                        <div class="grid-item">
-                            <div class="grid-item-booked"></div>
-                        </div>
-                    </div>
+{#                    <div class="timetable-column">#}
+{#                        <div class="grid-item">#}
+{#                            Mn#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-vacant"></div>#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-booked"></div>#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-vacant"></div>#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-vacant"></div>#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-unavailable"></div>#}
+{#                        </div>#}
+{#                        <div class="grid-item">#}
+{#                            <div class="grid-item-booked"></div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             </div>
         </div>
     </div>
     <script>
         APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
+            // creating timetable
+            let hours = [], i, j;
+            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0])+1; i++) {
+                for (j = 0; j < 2; j++) {
+                    hours.push(i + ":" + (j === 0 ? "00" : 30 * j));
+                }
+            }
+
+            hours.pop();
+
+            // building hours column
+            for (let hour of hours) {
+                $(".timetable-hours").append(`
+                    <div class="grid-item">
+                        ${hour}
+                    </div>
+                `)
+            }
+
+            // getting list of days
+            let days = getDates(new Date(), new Date().addDays(5));
+            for (let day of days) {
+                $('.timetable').append(`<div class="timetable-column" id="${day}">
+                    <div class="grid-item">${day.toString().slice(0, 3)}</div>
+                </div>`)
+
+            }
+
             APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
                 let coursesHtml = '';
                 let course_types = [];
 
                 for (let course of data) {
-                    console.log(course);
                     course_types.push(course.lesson_type.course_type.name);
                     coursesHtml += `
                             <div class="teacher-course-item">
@@ -92,10 +102,6 @@
                     teacher = "{{ text.keywords.user }}";
                 }
 
-
-                console.log(`User: ${user.first_name}`);
-
-                console.log(user);
                 $('.preloader').css('display', 'none');
                 $('footer').css('position', "relative");
 
@@ -145,6 +151,14 @@
             </div>
            `)
             });
+        });
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
+
+            for (let booking of bookings) {
+
+            }
         });
     </script>
 {% endblock %}

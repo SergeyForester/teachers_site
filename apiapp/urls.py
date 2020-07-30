@@ -10,6 +10,7 @@ urlpatterns = [
 	path('v1/users/<int:id>/teachers/', views.UserTeachersView.as_view({'get': 'list'})),
 	path('v1/users/<int:id>/lessons/', views.UserLessonsView.as_view({'get': 'list'})),
 	path('v1/courses/', views.courses_view),
+	path('v1/users/<int:id>/bookings/', views.UserBookingsView.as_view({'get':'list'})),
 
 
 ]
