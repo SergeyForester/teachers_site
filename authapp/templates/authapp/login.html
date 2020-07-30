@@ -1,0 +1,20 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <div  style="padding: 20px" class="container mt-5 background-white container-radius">
+        <h5>{{ text.auth.login }}</h5>
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp"
+                       placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">{{ text.auth.password }}</label>
+                <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="{{ text.auth.password }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+{% endblock %}
