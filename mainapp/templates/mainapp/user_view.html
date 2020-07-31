@@ -58,12 +58,13 @@
             }
 
             hours.pop();
+            {#hours.shift();#}
 
             // building hours column
-            for (let hour of hours) {
+            for (let i = 0; i < hours.length; i++) {
                 $(".timetable-hours").append(`
                     <div class="grid-item">
-                        ${hour}
+                        ${hours[i]} - ${hours[i + 1]}
                     </div>
                 `)
             }
@@ -157,7 +158,7 @@
 
 
         APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
-
+            console.log(bookings);
             for (let day of getDates(new Date(), new Date().addDays(5))) {
                 let cells = 0;
                 for (let hour of hours) {

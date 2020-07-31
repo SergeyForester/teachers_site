@@ -56,6 +56,7 @@
 
                     if (lessons.length) {
                         for (let lesson of lessons) {
+                            console.log(lesson);
                             if (lesson.is_completed) {
                                 completed_lessons_counter++;
                             } else {
@@ -63,7 +64,7 @@
                                 upcoming_lessons_html += `
                                 <div class="list-item">
                                     <h7 style="width: 100%">${lesson.lesson.lesson_type.user.first_name} ${lesson.lesson.lesson_type.user.last_name}</h7>
-                                    <h6 style="width: 100%">%{lesson.lesson.name}, ${lesson.datetime}</h6>
+                                    <h6 style="width: 100%">${lesson.lesson.name}, ${lesson.datetime}</h6>
                                 </div>
                             `;
                             }
