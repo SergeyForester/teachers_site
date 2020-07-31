@@ -1,13 +1,13 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
     <div id="app">
-        <div class="message-main">
+        <div class="message-main pb-3">
             <div class="message-main-text ">
                 {{ text.main.main_message }}
             </div>
             <div class="message-main-input">
-                <form action="{% url 'main:teachers_search' %}" id="course-form" method="get">
-                    <div class="input-group mb-3">
+                <form action="{% url 'main:teachers_search' %}" class="pb-3" id="course-form" method="get">
+                    <div class="input-group">
                         <input type="text" class="form-control" name="course" autocomplete="off" id="course-input"
                                placeholder="{{ text.main.input_message }}"
                                aria-label="Recipient's username" aria-describedby="basic-addon2">

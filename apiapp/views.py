@@ -134,14 +134,15 @@ class UserLessonsView(viewsets.ModelViewSet):
 	serializer_class = LessonBookingSerializer
 
 	def get_queryset(self):
+		queryset = LessonBooking.objects.filter(user__id=self.kwargs['id'])
+
 		if 'completed' in self.request.query_params:
 			if self.request.query_params['completed'] == "true":
-				return LessonBooking.objects.filter(is_completed=True, user__id=self.kwargs['id'])
+				queryset = queryset.filter(is_completed=True)
 			elif self.request.query_params['completed'] == "false":
-				return LessonBooking.objects.filter(is_completed=True, user__id=self.kwargs['id'])
-		else:
-			return LessonBooking.objects.filter(user__id=self.kwargs['id'])
+				queryset = queryset.filter(is_completed=False)
 
+		return set(queryset.order_by('-lesson__lessonbooking__datetime'))
 
 
 class UserBookingsView(viewsets.ModelViewSet):
@@ -151,4 +152,4 @@ class UserBookingsView(viewsets.ModelViewSet):
 		date = datetime.datetime.today()
 		date = date.replace(hour=0, second=0, minute=0, microsecond=0)
 		print(TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date).query)
-		return TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date)
+		return TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date).order_by('-lesson_booking__datetime')

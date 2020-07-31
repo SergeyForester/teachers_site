@@ -31,6 +31,7 @@
                 console.log(teachers);
                 let teachers_html = '';
                 if (teachers.length) {
+                    teachers_html += '<div><h5>{{ text.profile.your_teachers }}</h5></div>';
                     for (let teacher of teachers) {
                         teachers_html += `
                         <div class="list-item flex-block">
@@ -55,8 +56,9 @@
                     let upcoming_lessons_counter = 0;
 
                     if (lessons.length) {
+                        console.log(lessons);
+
                         for (let lesson of lessons) {
-                            console.log(lesson);
                             if (lesson.is_completed) {
                                 completed_lessons_counter++;
                             } else {
@@ -64,7 +66,7 @@
                                 upcoming_lessons_html += `
                                 <div class="list-item">
                                     <h7 style="width: 100%">${lesson.lesson.lesson_type.user.first_name} ${lesson.lesson.lesson_type.user.last_name}</h7>
-                                    <h6 style="width: 100%">${lesson.lesson.name}, ${lesson.datetime}</h6>
+                                    <h6 style="width: 100%">${lesson.lesson.name}, ${lesson.datetime.replace('T', ' ').replace('Z', '')}</h6>
                                 </div>
                             `;
                             }
@@ -75,7 +77,9 @@
 
                     $('.preloader').css('display', 'none');
 
-                    if (data.profile.location !== '' || data.profile.birth_date !== '') {$('#myModal').modal('show');}
+                    if (data.profile.location !== '' || data.profile.birth_date !== '') {
+                        $('#myModal').modal('show');
+                    }
 
                     {#$('footer').css('position', "relative");#}
 
@@ -111,11 +115,11 @@
                                 <div class="mt-3">
                                     <div class="flex-block">
                                         <div class="flex-left background-white container-radius" style="width: 50%; text-align: center">
-                                            <h5><span class="h5 disabled">{{ text.profile.completed_lessons }}:</span> 0</h5>
+                                            <h5><span class="h5 disabled">{{ text.profile.completed_lessons }}:</span> ${completed_lessons_counter}</h5>
                                         </div>
                                         <div class="flex-right ml-2 background-white container-radius"
                                              style="width: 50%; text-align: center">
-                                            <h5><span class="h5 disabled">{{ text.profile.upcoming_lessons }}:</span> 0</h5>
+                                            <h5><span class="h5 disabled">{{ text.profile.upcoming_lessons }}:</span> ${upcoming_lessons_counter}</h5>
                                         </div>
                                     </div>
                                 </div>

@@ -11,7 +11,8 @@ STRINGS = {
 		},
 		'profile': {
 			'upcoming_lessons': 'Предстоящие уроки', 'completed_lessons': 'Завершенные уроки',
-			'no_teachers': 'У вас пока что нет учителей', 'no_upcoming_lessons': 'У вас нет предстоящих уроков'
+			'no_teachers': 'У вас пока что нет учителей', 'no_upcoming_lessons': 'У вас нет предстоящих уроков',
+			'your_teachers': 'Ваши учителя'
 		},
 		'auth': {
 			'login': 'Логин', 'sign_up': 'Регистрация', 'password': 'Пароль'
@@ -28,7 +29,8 @@ STRINGS = {
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',
-			'no_teachers': 'You do not have teachers yet', 'no_upcoming_lessons': 'You do not have upcoming lessons'
+			'no_teachers': 'You do not have teachers yet', 'no_upcoming_lessons': 'You do not have upcoming lessons',
+			'your_teachers': 'Your teachers'
 		},
 		'auth': {
 			'login': 'Sign in', 'sign_up': 'Sign up', 'password': 'Password'
