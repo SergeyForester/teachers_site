@@ -158,9 +158,8 @@
 
         APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
 
-            console.log(bookings);
-
             for (let day of getDates(new Date(), new Date().addDays(5))) {
+                let cells = 0;
                 for (let hour of hours) {
                     let gridCell = '';
                     let hour_ = new Date(day);
@@ -168,7 +167,15 @@
                     hour_.setHours(hour.split(':')[0]);
                     hour_.setMinutes(hour.split(':')[1]);
 
-                    if (getBooking(day, hour_, bookings)) {
+                    let bookingData = getBooking(day, hour_, bookings);
+                    if (bookingData[0] || cells > 1) {
+                        if (cells === 0) {
+                            cells = bookingData[1].lesson_booking.lesson.minutes / 30;
+                            console.log(cells);
+                        } else {
+                            cells--;
+
+                        }
                         gridCell = `
                         <div class="grid-item">
                             <div class="grid-item-booked"></div>
@@ -195,19 +202,17 @@
                     bookingDateDay.setHours(0, 0, 0, 0);
                     day.setHours(0, 0, 0, 0);
 
-                    console.log(bookingDateDay.getTime() === day.getTime());
-                    hour.setMilliseconds(0);
 
                     if (bookingDateDay.getTime() === day.getTime()) {
-                        console.log(hour)
                         if (bookingDate.getTime() === hour.getTime()) {
-                            return true;
+                            return [true, booking];
                         }
                     }
                 }
 
-                return false;
+                return [false, null];
             }
-        });
+        })
+        ;
     </script>
 {% endblock %}

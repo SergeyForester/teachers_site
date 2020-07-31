@@ -41,7 +41,7 @@ class LessonSerializer(ModelSerializer):
 
 
 class LessonBookingSerializer(ModelSerializer):
-	lesson_type = LessonSerializer(read_only=True)
+	lesson = LessonSerializer(read_only=True)
 
 	class Meta:
 		model = LessonBooking
