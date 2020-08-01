@@ -10,6 +10,7 @@
 .navbar div.ml-auto {
     margin-right: 100px;
 }
+
 .timetable {
     display: flex;
 }
@@ -29,7 +30,7 @@
 }
 
 .timetable-hours .grid-item {
-    width: 100px!important;
+    width: 100px !important;
 }
 
 .grid-item-vacant {
@@ -155,14 +156,39 @@ footer {
     height: 100%;
 }
 
+.booking-course {
+    height: 85vh;
+    position: fixed;
+    z-index: 999;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    overflow-y: scroll;
+
+}
+
+.booking-course .timetable .grid-item {
+    /*width: 50px;*/
+}
+
 .disabled {
     color: lightgray;
     font-weight: 400;
 }
 
-.user a {
+a {
     color: black !important;
     text-decoration: none;
+}
+
+.teacher-course-item {
+    padding: 20px 5px;
+    border-radius: 10px;
+}
+
+.teacher-course-item:hover {
+    cursor: pointer;
+    background: #f4f4f4;
 }
 
 .user-preview-video {
@@ -191,6 +217,10 @@ footer {
     max-height: 100%;
     overflow: auto;
 
+}
+
+.pointer:hover {
+    cursor: pointer;
 }
 
 .user-avatar img {

@@ -1,6 +1,11 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
-
+    <style>
+        body {
+            position: relative;
+            min-height: 100%;
+        }
+    </style>
     <div class="preloader"></div>
 
     <div class="container mt-3  mb-5">
@@ -17,36 +22,32 @@
                     <div class="timetable-column timetable-hours">
                         <div class="grid-item"></div>
                     </div>
-                    {#                    <div class="timetable-column">#}
-                    {#                        <div class="grid-item">#}
-                    {#                            Mn#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-vacant"></div>#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-booked"></div>#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-vacant"></div>#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-vacant"></div>#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-unavailable"></div>#}
-                    {#                        </div>#}
-                    {#                        <div class="grid-item">#}
-                    {#                            <div class="grid-item-booked"></div>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
                 </div>
             </div>
+        </div>
+        <div class="booking-course background-white container-radius" style="display: none">
+            <div style="text-align: right" class="pointer">
+                <i class="fa fa-times"></i>
+            </div>
+            <h6>{{ text.keywords.booking }}</h6>
+            <h4 id="booking-course-name"></h4>
+            <div class="row">
+                <div class="timetable col-12 col-md-9 col-lg-9">
+                    <div class="timetable-column timetable-hours">
+                        <div class="grid-item"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    Content
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
         let days = [];
         let hours = [];
+        let lessons = [];
         APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
             // creating timetable
             hours = [];
@@ -64,7 +65,7 @@
             for (let i = 0; i < hours.length; i++) {
                 $(".timetable-hours").append(`
                     <div class="grid-item">
-                        ${hours[i]} - ${hours[i + 1]}
+                        ${hours[i]} - ${hours[i + 1] ? hours[i + 1] : ''}
                     </div>
                 `)
             }
@@ -80,14 +81,17 @@
             APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
                 let coursesHtml = '';
                 let course_types = [];
+                lessons = data;
 
+                let counter = 0;
                 for (let course of data) {
                     course_types.push(course.lesson_type.course_type.name);
                     coursesHtml += `
-                            <div class="teacher-course-item">
-                                <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
-                            </div>
-                        `
+                        <div class="teacher-course-item" data-id="${counter}">
+                            <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
+                        </div>
+                        `;
+                    counter++;
                 }
                 let course_types_html = '';
                 course_types = new Set(course_types);
@@ -213,7 +217,19 @@
 
                 return [false, null];
             }
-        })
-        ;
+        });
+
+        $('body').on('click', '.teacher-course-item', function () {
+            {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
+            let course = lessons[$(this).data('id')];
+
+            $(".booking-course").css('display', 'block');
+            $('#booking-course-name').text(course.name);
+
+        });
+        $('.pointer').click(function () {
+                $('.booking-course').css('display', 'none')
+            }
+        );
     </script>
 {% endblock %}
