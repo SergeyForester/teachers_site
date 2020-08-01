@@ -20,11 +20,16 @@
     background: #efefef;
 }
 
+
 .grid-item {
     width: 42px;
     text-align: center;
-    height: 25px;
+    height: 26px;
     border: #ddd solid 1px;
+}
+
+.timetable-hours .grid-item {
+    width: 100px!important;
 }
 
 .grid-item-vacant {
