@@ -1,0 +1,235 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <style>
+        body {
+            position: relative;
+            min-height: 100%;
+        }
+    </style>
+    <div class="preloader"></div>
+
+    <div class="container mt-3  mb-5">
+        <div class="row">
+            <div class="main-content container-radius background-white mr-3 col-12 col-md-12 col-lg-7">
+                {#user's main content#}
+
+            </div>
+            <div style="height: fit-content"
+                 class="side-content container-radius background-white col-12 col-md-12 col-lg-4">
+                {#side bar user's content#}
+                <h5>{{ text.keywords.timetable }}</h5>
+                <div class="timetable">
+                    <div class="timetable-column timetable-hours">
+                        <div class="grid-item"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="booking-course background-white container-radius" style="display: none">
+            <div style="text-align: right" class="pointer">
+                <i class="fa fa-times"></i>
+            </div>
+            <h6>{{ text.keywords.booking }}</h6>
+            <h4 id="booking-course-name"></h4>
+            <div class="row">
+                <div class="timetable col-12 col-md-9 col-lg-9">
+                    <div class="timetable-column timetable-hours">
+                        <div class="grid-item"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    Content
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        let days = [];
+        let hours = [];
+        let lessons = [];
+        APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
+            // creating timetable
+            hours = [];
+            let i, j;
+            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0]) + 1; i++) {
+                for (j = 0; j < 2; j++) {
+                    hours.push(i + ":" + (j === 0 ? "00" : 30 * j));
+                }
+            }
+
+            hours.pop();
+            {#hours.shift();#}
+
+            // building hours column
+            for (let i = 0; i < hours.length; i++) {
+                $(".timetable-hours").append(`
+                    <div class="grid-item">
+                        ${hours[i]} - ${hours[i + 1] ? hours[i + 1] : ''}
+                    </div>
+                `)
+            }
+
+            // getting list of days
+            days = getDates(new Date(), new Date().addDays(5));
+            for (let day of days) {
+                $('.timetable').append(`<div class="timetable-column" id="${day.toString().slice(0, 3)}">
+                    <div class="grid-item">${day.toString().slice(0, 3)}</div>
+                </div>`);
+            }
+
+            APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
+                let coursesHtml = '';
+                let course_types = [];
+                lessons = data;
+
+                let counter = 0;
+                for (let course of data) {
+                    course_types.push(course.lesson_type.course_type.name);
+                    coursesHtml += `
+                        <div class="teacher-course-item" data-id="${counter}">
+                            <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
+                        </div>
+                        `;
+                    counter++;
+                }
+                let course_types_html = '';
+                course_types = new Set(course_types);
+                for (let course_type of course_types) {
+                    course_types_html += `
+                            <div class="teacher-course-item">
+                                <h4>${course_type}</h4>
+                            </div>`
+                }
+
+                let teacher = '';
+                if (user.profile.is_teacher) {
+                    teacher = '{{ text.keywords.teacher }}';
+                } else {
+                    teacher = "{{ text.keywords.user }}";
+                }
+
+                $('.preloader').css('display', 'none');
+                $('footer').css('position', "relative");
+
+                $('.main-content').html(`
+            <div class="user-view">
+                <div class="video-view">
+                    <video controls class="user-preview-video">
+                        <source src="${user.profile.video}">
+                    </video>
+                </div>
+                <div class="mt-3 user-view-overview">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="user-avatar">
+                                <img src="${user.profile.avatar}">
+                            </div>
+                            <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login}</h6>
+                        </div>
+                        <div class="col-6">
+                            <h3>${user.first_name} ${user.last_name}</h3>
+                            <h5 class="disabled">${teacher}</h5>
+                            <h5 class="disabled">${user.profile.location}</h5>
+                            <h5>{{ text.keywords.teaches }}</h5>
+                            <div class="mb-5 teacher-courses-list">
+                                ${course_types_html}
+                            </div>
+                        </div>
+                        <div class="col-3" style="text-align:right!important">
+                            <div style="margin-right:10px;">
+                                <span style="color:#fec400;">
+                                    ${user.profile.rating} <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row p-4">
+                        <h5>{{ text.keywords.about_me }}</h5>
+                        <p>${user.profile.bio}</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <h5>{{ text.keywords.teaches }}</h5>
+                        <div>${coursesHtml}</div>
+                    </div>
+                </div>
+            </div>
+           `)
+            });
+        });
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
+            console.log(bookings);
+            for (let day of getDates(new Date(), new Date().addDays(5))) {
+                let cells = 0;
+                for (let hour of hours) {
+                    let gridCell = '';
+                    let hour_ = new Date(day);
+
+                    hour_.setHours(hour.split(':')[0]);
+                    hour_.setMinutes(hour.split(':')[1]);
+
+                    let bookingData = getBooking(day, hour_, bookings);
+                    if (bookingData[0] || cells > 1) {
+                        if (cells === 0) {
+                            cells = bookingData[1].lesson_booking.lesson.minutes / 30;
+                            console.log(cells);
+                        } else {
+                            cells--;
+
+                        }
+                        gridCell = `
+                        <div class="grid-item">
+                            <div class="grid-item-booked"></div>
+                        </div>
+                        `;
+                    } else {
+                        gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-vacant"></div>
+                            </div>
+                        `;
+                    }
+
+                    $(`#${day.toString().slice(0, 3)}`).append(gridCell);
+
+                }
+            }
+
+            function getBooking(day, hour, bookings) {
+                for (let booking of bookings) {
+                    let bookingDate = new Date(booking.lesson_booking.datetime);
+
+                    let bookingDateDay = new Date(bookingDate);
+                    bookingDateDay.setHours(0, 0, 0, 0);
+                    day.setHours(0, 0, 0, 0);
+
+
+                    if (bookingDateDay.getTime() === day.getTime()) {
+                        if (bookingDate.getTime() === hour.getTime()) {
+                            return [true, booking];
+                        }
+                    }
+                }
+
+                return [false, null];
+            }
+        });
+
+        $('body').on('click', '.teacher-course-item', function () {
+            {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
+            let course = lessons[$(this).data('id')];
+
+            $(".booking-course").css('display', 'block');
+            $('#booking-course-name').text(course.name);
+
+        });
+        $('.pointer').click(function () {
+                $('.booking-course').css('display', 'none')
+            }
+        );
+    </script>
+{% endblock %}
