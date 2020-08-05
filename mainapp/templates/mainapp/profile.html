@@ -1,0 +1,168 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <div class="preloader"></div>
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Let's fill some info about you.</p>
+                    <a href="#" class="open-profile">Open profile</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-modal background-white container-radius" style="display: none">
+        <div style="text-align: right" class="pointer">
+            <i class="fa fa-times"></i>
+        </div>
+        <h4>{{ text.profile.your_profile }}</h4>
+        <form action="/api/v1/users/{{ user_id }}/profile/?type=redirect" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                {{ profile_form.as_p }}
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+
+        </form>
+    </div>
+    <script>
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/', function (data) {
+            console.log(data);
+
+            // preparing data for user's teachers
+            let teachers = APIRequest('/api/v1/users/{{ user_id }}/teachers/', function (teachers) {
+                console.log(teachers);
+                let teachers_html = '';
+                if (teachers.length) {
+                    teachers_html += '<div><h5>{{ text.profile.your_teachers }}</h5></div>';
+                    for (let teacher of teachers) {
+                        teachers_html += `
+                        <div class="list-item flex-block">
+                            <div class="user-avatar flex-left mr-2" style="width: 70px; height: 70px">
+                                <img src="${teacher.profile.avatar}" alt="">
+                            </div>
+                            <div class="flex-right">
+                                <h6 style="width: 100%">${teacher.first_name} ${teacher.last_name}</h6>
+                                <h7 style="width: 100%">${teacher.profile.location}</h7>
+                            </div>
+                        </div>
+                    `
+                    }
+                } else {
+                    teachers_html = '<div><h5>{{ text.profile.no_teachers }}</h5></div>';
+                }
+
+                // fetching data: upcoming lessons
+                APIRequest('/api/v1/users/{{ user_id }}/lessons/', function (lessons) {
+                    let upcoming_lessons_html = ``;
+                    let completed_lessons_counter = 0;
+                    let upcoming_lessons_counter = 0;
+
+                    if (lessons.length) {
+                        console.log(lessons);
+
+                        for (let lesson of lessons) {
+                            if (lesson.is_completed) {
+                                completed_lessons_counter++;
+                            } else {
+                                upcoming_lessons_counter++;
+                                upcoming_lessons_html += `
+                                <div class="list-item">
+                                    <h7 style="width: 100%">${lesson.lesson.lesson_type.user.first_name} ${lesson.lesson.lesson_type.user.last_name}</h7>
+                                    <h6 style="width: 100%">${lesson.lesson.name}, ${lesson.datetime.replace('T', ' ').replace('Z', '')}</h6>
+                                </div>
+                            `;
+                            }
+                        }
+                    } else {
+                        upcoming_lessons_html = '<div><h5>{{ text.profile.no_upcoming_lessons }}</h5></div>'
+                    }
+
+                    $('.preloader').css('display', 'none');
+
+                    if (data.profile.location !== '' || data.profile.birth_date !== '') {
+                        $('#myModal').modal('show');
+                    }
+
+                    {#$('footer').css('position', "relative");#}
+
+                    $('body').append(
+                        `<div class="container mt-5">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-12">
+                                <div class="user-block background-white container-radius">
+                                    <div class="flex-block" style="text-align: right">
+                                        <div class="user-avatar flex-left">
+                                            <img src="${data.profile.avatar}" alt="">
+                                        </div>
+                                        <h4 class="flex-right" style="width: 65%;">${data.first_name}&nbsp;${data.last_name}</h4>
+                                    </div>
+                                    <h6 class="disabled">${data.profile.location}</h6>
+                                    <h6 class="disabled" id="time"></h6>
+                                    <hr>
+                                    <a href="#" class="open-profile"><h6>{{ text.profile.your_profile }}</h6></a>
+                                    <a href="/auth/logout/"><h6 class="disabled">{{ text.profile.logout }}</h6></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-12">
+                                <div class="background-white container-radius">
+                                    <a href="{% url 'main:teachers_search' %}">
+                                        <button type="button"
+                                                class="btn-red btn btn-outline-primary btn-lg btn-block">{{ text.keywords.find_teacher }}
+                                        </button>
+                                    </a>
+                                    <hr>
+                                    <div class="list mt-3">
+                                        ${teachers_html}
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="flex-block">
+                                        <div class="flex-left background-white container-radius" style="width: 50%; text-align: center">
+                                            <h5><span class="h5 disabled">{{ text.profile.completed_lessons }}:</span> ${completed_lessons_counter}</h5>
+                                        </div>
+                                        <div class="flex-right ml-2 background-white container-radius"
+                                             style="width: 50%; text-align: center">
+                                            <h5><span class="h5 disabled">{{ text.profile.upcoming_lessons }}:</span> ${upcoming_lessons_counter}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 background-white container-radius">
+                                    <h5>{{ text.profile.upcoming_lessons }}</h5>
+                                    <div class="list mt-3">
+                                        ${upcoming_lessons_html}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                    );
+                });
+            });
+        });
+        $('body').on('click', '.open-profile', function () {
+            $('.bottom-modal').css("display", "block");
+        });
+        $('.pointer').click(function () {
+                $('.bottom-modal').css('display', 'none')
+            }
+        );
+    </script>
+    <script>
+        let s = new Date().toLocaleString();
+        $('#time').text(s.split(', ')[1]);
+    </script>
+{% endblock %}

@@ -2,7 +2,7 @@
 {% block content %}
     <div  style="padding: 20px" class="container mt-5 background-white container-radius">
         <h5>{{ text.auth.login }}</h5>
-        <form method="post" action="#">
+        <form method="post" action="{% url 'auth:login' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="exampleInputEmail1">Email</label>

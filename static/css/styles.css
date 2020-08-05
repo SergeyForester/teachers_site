@@ -23,14 +23,17 @@
 
 
 .grid-item {
-    width: 42px;
     text-align: center;
     height: 26px;
     border: #ddd solid 1px;
 }
 
-.timetable-hours .grid-item {
-    width: 100px !important;
+.timetable-column {
+    width: 16.666%;
+}
+
+.timetable-hours {
+    width: 46% !important;
 }
 
 .grid-item-vacant {
@@ -153,10 +156,12 @@ footer {
 
 .user-right-side-avatar img {
     width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
     height: 100%;
 }
 
-.booking-course {
+.bottom-modal {
     height: 85vh;
     position: fixed;
     z-index: 999;
@@ -167,7 +172,7 @@ footer {
 
 }
 
-.booking-course .timetable .grid-item {
+.bottom-modal .timetable .grid-item {
     /*width: 50px;*/
 }
 
@@ -226,6 +231,7 @@ a {
 .user-avatar img {
     border-radius: 999px;
     width: 100%;
+    object-fit: cover;
     height: 100%;
 }
 

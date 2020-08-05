@@ -1,16 +1,20 @@
 import datetime
 
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.forms import model_to_dict
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from django.views.generic import UpdateView
 from googletrans import Translator
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
 
 from apiapp.serializers import UserSerializer, LessonSerializer, CourseTypeSerializer, LessonBookingSerializer, \
-	TeacherTimetableBookingSerializer
-from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking
+	TeacherTimetableBookingSerializer, ProfileSerializer
+from mainapp.forms import ProfileForm
+from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile
 from mainapp.strings import STRINGS
 
 
@@ -73,6 +77,8 @@ class UserCoursesView(viewsets.ModelViewSet):
 	def get_queryset(self):
 		print('User lessons view...')
 		lessons = Lesson.objects.filter(lesson_type__user__id=self.kwargs['id'])
+		if not len(lessons): return lessons
+
 		if 'lang' in self.request.query_params:
 			translator = Translator()
 
@@ -151,5 +157,41 @@ class UserBookingsView(viewsets.ModelViewSet):
 	def get_queryset(self):
 		date = datetime.datetime.today()
 		date = date.replace(hour=0, second=0, minute=0, microsecond=0)
-		print(TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date).query)
-		return TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'], lesson_booking__datetime__gte=date).order_by('-lesson_booking__datetime')
+		print(TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'],
+		                                             lesson_booking__datetime__gte=date).query)
+		return TeacherTimetableBooking.objects.filter(lesson_booking__lesson__lesson_type__user__id=self.kwargs['id'],
+		                                              lesson_booking__datetime__gte=date).order_by(
+			'-lesson_booking__datetime')
+
+
+def profile(request, id):
+	obj = None
+
+	if request.method == 'POST':
+		form = ProfileForm(request.POST, request.FILES, instance=Profile.objects.get(id=id))
+		obj = form.save()
+
+		if 'type' in request.GET:
+			if request.GET['type'] == 'redirect':
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+	res = model_to_dict(obj)
+	res['video'] = obj.video.url
+	res['avatar'] = obj.avatar.url
+	return JsonResponse(res, safe=False)
+
+
+def create_booking(request):
+	obj = None
+
+	if request.method == 'POST':
+		day = datetime.datetime.strptime(request.POST['day'][3: 15], '%b %d %Y')
+		obj = LessonBooking.objects.create(datetime=request.POST['day'], lesson__id=request.POST['lesson_id'],
+		                                   user=request.POST['user_id'])
+
+		if 'type' in request.GET:
+			if request.GET['type'] == 'redirect':
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+	res = model_to_dict(obj)
+	return JsonResponse(res, safe=False)

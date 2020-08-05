@@ -8,12 +8,12 @@ STRINGS = {
 			'teacher': "Учитель", 'teaches': 'Обучает', 'from': 'От', 'user': 'Пользователь',
 			'last_login': "Был последний раз в сети", 'about_me': "Обо мне",
 			'find_teacher': 'Найти преподавателя', 'timetable': 'Расписание',
-			'booking': 'Бронирование'
+			'booking': 'Бронирование', 'price': 'Цена', 'lesson_time': 'Время урока', 'lesson_day': 'День урока'
 		},
 		'profile': {
 			'upcoming_lessons': 'Предстоящие уроки', 'completed_lessons': 'Завершенные уроки',
 			'no_teachers': 'У вас пока что нет учителей', 'no_upcoming_lessons': 'У вас нет предстоящих уроков',
-			'your_teachers': 'Ваши учителя'
+			'your_teachers': 'Ваши учителя', 'logout': 'Выйти', 'your_profile': 'Ваш профиль'
 		},
 		'auth': {
 			'login': 'Логин', 'sign_up': 'Регистрация', 'password': 'Пароль'
@@ -26,12 +26,13 @@ STRINGS = {
 		'keywords': {
 			'teacher': "Teacher", 'teaches': 'Teaches', 'from': 'From', 'user': 'User',
 			"last_login": 'Last login', 'about_me': "About me", 'find_teacher': 'Find teacher',
-			'timetable': 'Timetable', 'booking': "Booking"
+			'timetable': 'Timetable', 'booking': "Booking", 'price': 'Price', 'lesson_time': 'Lesson time',
+			'lesson_day': 'Lesson day'
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',
 			'no_teachers': 'You do not have teachers yet', 'no_upcoming_lessons': 'You do not have upcoming lessons',
-			'your_teachers': 'Your teachers'
+			'your_teachers': 'Your teachers', 'logout': 'Logout', 'your_profile': 'Your profile'
 		},
 		'auth': {
 			'login': 'Sign in', 'sign_up': 'Sign up', 'password': 'Password'

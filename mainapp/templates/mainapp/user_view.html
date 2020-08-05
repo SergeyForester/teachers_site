@@ -6,6 +6,7 @@
             min-height: 100%;
         }
     </style>
+
     <div class="preloader"></div>
 
     <div class="container mt-3  mb-5">
@@ -25,22 +26,38 @@
                 </div>
             </div>
         </div>
-        <div class="booking-course background-white container-radius" style="display: none">
-            <div style="text-align: right" class="pointer">
-                <i class="fa fa-times"></i>
-            </div>
-            <h6>{{ text.keywords.booking }}</h6>
-            <h4 id="booking-course-name"></h4>
-            <div class="row">
-                <div class="timetable col-12 col-md-9 col-lg-9">
-                    <div class="timetable-column timetable-hours">
-                        <div class="grid-item"></div>
+        <div class="bottom-modal background-white container-radius" style="display: none">
+            <form action="/api/v1/bookings/" method="post">
+                <input type="hidden" name="lesson_id" id="lesson_id" value="">
+                <input type="hidden" name="user_id" value="{{ request.user.id }}">
+                <div style="text-align: right" class="pointer">
+                    <i class="fa fa-times"></i>
+                </div>
+                <h6>{{ text.keywords.booking }}</h6>
+                <h4 id="bottom-modal-name"></h4>
+                <div class="row">
+                    <div class="timetable col-12 col-md-6 col-lg-5">
+                        <div class="timetable-column timetable-hours">
+                            <div class="grid-item"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-7 mt-2">
+                        <h6 id="bottom-modal-price">Price: </h6>
+                        <div class="flex-block">
+                            <div class="flex-left">
+                                <h5 id="bottom-modal-price">{{ text.keywords.lesson_time }}: </h5>
+                                <select name="time" id="lesson_time"></select>
+                            </div>
+                            <div class="flex-right ml-5">
+                                <h5 id="bottom-modal-price">{{ text.keywords.lesson_day }}: </h5>
+                                <select name="day" id="lesson_day"></select>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="col-12 col-md-3 col-lg-3">
-                    Content
-                </div>
-            </div>
+                <button class="btn btn-primary mt-4" type="submit">Book</button>
+            </form>
 
         </div>
     </div>
@@ -73,91 +90,92 @@
             // getting list of days
             days = getDates(new Date(), new Date().addDays(5));
             for (let day of days) {
-                $('.timetable').append(`<div class="timetable-column" id="${day.toString().slice(0, 3)}">
+                $('.timetable').append(`<div class="timetable-column ${day.toString().slice(0, 3)}">
                     <div class="grid-item">${day.toString().slice(0, 3)}</div>
                 </div>`);
             }
 
-            APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
-                let coursesHtml = '';
-                let course_types = [];
-                lessons = data;
+            APIRequest(`/api/v1/users/{{ user_id }}/courses/`, function (data) {
+                    let coursesHtml = '';
+                    let course_types = [];
+                    lessons = data;
 
-                let counter = 0;
-                for (let course of data) {
-                    course_types.push(course.lesson_type.course_type.name);
-                    coursesHtml += `
+                    let counter = 0;
+                    for (let course of data) {
+                        course_types.push(course.lesson_type.course_type.name);
+                        coursesHtml += `
                         <div class="teacher-course-item" data-id="${counter}">
                             <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
                         </div>
                         `;
-                    counter++;
-                }
-                let course_types_html = '';
-                course_types = new Set(course_types);
-                for (let course_type of course_types) {
-                    course_types_html += `
-                            <div class="teacher-course-item">
+                        counter++;
+                        let course_types_html = '';
+                        course_types = new Set(course_types);
+                        for (let course_type of course_types) {
+                            course_types_html += `
+                            <div class="">
                                 <h4>${course_type}</h4>
                             </div>`
+                        }
+
+                        let teacher = '';
+                        if (user.profile.is_teacher) {
+                            teacher = '{{ text.keywords.teacher }}';
+                        } else {
+                            teacher = "{{ text.keywords.user }}";
+                        }
+
+                        $('.preloader').css('display', 'none');
+                        $('footer').css('position', "relative");
+
+                        $('.main-content').html(`
+                        <div class="user-view">
+                            <div class="video-view">
+                                <video controls class="user-preview-video">
+                                    <source src="${user.profile.video}">
+                                </video>
+                            </div>
+                            <div class="mt-3 user-view-overview">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="user-avatar">
+                                            <img src="${user.profile.avatar}">
+                                        </div>
+                                        <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login}</h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <h3>${user.first_name} ${user.last_name}</h3>
+                                        <h5 class="disabled">${teacher}</h5>
+                                        <h5 class="disabled">${user.profile.location}</h5>
+                                        <h5>{{ text.keywords.teaches }}</h5>
+                                        <div class="mb-5 teacher-courses-list">
+                                            ${course_types_html}
+                                        </div>
+                                    </div>
+                                    <div class="col-3" style="text-align:right!important">
+                                        <div style="margin-right:10px;">
+                                            <span style="color:#fec400;">
+                                                ${user.profile.rating} <i class="fa fa-star" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row p-4">
+                                    <h5>{{ text.keywords.about_me }}</h5>
+                                    <p>${user.profile.bio}</p>
+                                </div>
+                                <hr>
+                                <div>
+                                    <h5>{{ text.keywords.teaches }}</h5>
+                                    <div>${coursesHtml}</div>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
                 }
-
-                let teacher = '';
-                if (user.profile.is_teacher) {
-                    teacher = '{{ text.keywords.teacher }}';
-                } else {
-                    teacher = "{{ text.keywords.user }}";
-                }
-
-                $('.preloader').css('display', 'none');
-                $('footer').css('position', "relative");
-
-                $('.main-content').html(`
-            <div class="user-view">
-                <div class="video-view">
-                    <video controls class="user-preview-video">
-                        <source src="${user.profile.video}">
-                    </video>
-                </div>
-                <div class="mt-3 user-view-overview">
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="user-avatar">
-                                <img src="${user.profile.avatar}">
-                            </div>
-                            <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login}</h6>
-                        </div>
-                        <div class="col-6">
-                            <h3>${user.first_name} ${user.last_name}</h3>
-                            <h5 class="disabled">${teacher}</h5>
-                            <h5 class="disabled">${user.profile.location}</h5>
-                            <h5>{{ text.keywords.teaches }}</h5>
-                            <div class="mb-5 teacher-courses-list">
-                                ${course_types_html}
-                            </div>
-                        </div>
-                        <div class="col-3" style="text-align:right!important">
-                            <div style="margin-right:10px;">
-                                <span style="color:#fec400;">
-                                    ${user.profile.rating} <i class="fa fa-star" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row p-4">
-                        <h5>{{ text.keywords.about_me }}</h5>
-                        <p>${user.profile.bio}</p>
-                    </div>
-                    <hr>
-                    <div>
-                        <h5>{{ text.keywords.teaches }}</h5>
-                        <div>${coursesHtml}</div>
-                    </div>
-                </div>
-            </div>
-           `)
-            });
+            );
         });
 
 
@@ -194,7 +212,7 @@
                         `;
                     }
 
-                    $(`#${day.toString().slice(0, 3)}`).append(gridCell);
+                    $(`.${day.toString().slice(0, 3)}`).append(gridCell);
 
                 }
             }
@@ -217,19 +235,33 @@
 
                 return [false, null];
             }
+
         });
 
         $('body').on('click', '.teacher-course-item', function () {
             {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
             let course = lessons[$(this).data('id')];
 
-            $(".booking-course").css('display', 'block');
-            $('#booking-course-name').text(course.name);
+            // inserting some texts...
+            $(".bottom-modal").css('display', 'block');
+            $('#bottom-modal-name').text(course.name);
+            $('#bottom-modal-price').text(`{{ text.keywords.price }}: ${course.price}`);
+            $('#lesson_id').val(course.id);
+
+
+            // inserting data into selects
+            for (let day of days) {
+                 $("#lesson_day").append(`<option value="${day}">${day.toString().slice(0, 10)}</option>`)
+            }
+
+            for (let hour of hours) {
+                 $("#lesson_time").append(`<option value="${hour}">${hour}</option>`)
+            }
+
 
         });
         $('.pointer').click(function () {
-                $('.booking-course').css('display', 'none')
-            }
-        );
+            $('.bottom-modal').css('display', 'none');
+        });
     </script>
 {% endblock %}

@@ -6,7 +6,7 @@ let app = new Vue({
 console.log(app);
 
 
-Date.prototype.addDays = function(days) {
+Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
@@ -16,7 +16,7 @@ function getDates(startDate, stopDate) {
     var dateArray = new Array();
     var currentDate = startDate;
     while (currentDate <= stopDate) {
-        dateArray.push(new Date (currentDate));
+        dateArray.push(new Date(currentDate));
         currentDate = currentDate.addDays(1);
     }
     return dateArray;
@@ -140,8 +140,16 @@ function autocomplete(inp, arr, con, hid_inp = null, data = null) {
     });
 }
 
-function APIRequest(url, func) {
-    fetch(url)
+function APIRequest(url, func, request = "GET", data = null) {
+    let el;
+
+    if (request === 'POST' || request === "PUT") {
+        el = {'method': request, body: JSON.stringify(data)}
+    } else {
+        el = {'method': request};
+    }
+
+    fetch(url, el)
         .then(
             function (response) {
                 if (response.status !== 200) {
