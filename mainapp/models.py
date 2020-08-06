@@ -6,6 +6,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from apiapp.models import TeacherTimetableBooking
+
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,7 +21,6 @@ class Profile(models.Model):
 	starting_price = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
 	work_day_start = models.CharField(max_length=5, default='08:00')
 	work_day_end = models.CharField(max_length=5, default='20:00')
-
 
 	def __str__(self):
 		return self.user.first_name
@@ -50,6 +51,8 @@ class Lesson(models.Model):
 	name = models.CharField(max_length=100)
 	price = models.DecimalField(max_digits=7, decimal_places=2)
 	minutes = models.PositiveIntegerField()
+	is_group = models.BooleanField(default=False)
+	places = models.IntegerField(default=1)
 
 
 @receiver(post_save, sender=Lesson)
@@ -63,13 +66,15 @@ class TeacherTimetable(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+# class TeacherTimetableBooking(models.Model): was replaced to apiapp
+
+
 class LessonBooking(models.Model):
 	datetime = models.DateTimeField()
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+	timetable_booking = models.ForeignKey(TeacherTimetableBooking, null=True, blank=True, on_delete=models.CASCADE)
 	is_completed = models.BooleanField(default=False)
 
 
-class TeacherTimetableBooking(models.Model):
-	lesson_booking = models.ForeignKey(LessonBooking, on_delete=models.CASCADE)
-	timetable = models.ForeignKey(TeacherTimetable, on_delete=models.CASCADE)
+

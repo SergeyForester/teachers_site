@@ -42,8 +42,8 @@
     width: 100%;
 }
 
-.grid-item-unavailable {
-    background: #ffffff;
+.grid-item-pending {
+    background: #ff9827;
     height: 100%;
     width: 100%;
 }

@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
@@ -14,7 +15,8 @@ from rest_framework.response import Response
 from apiapp.serializers import UserSerializer, LessonSerializer, CourseTypeSerializer, LessonBookingSerializer, \
 	TeacherTimetableBookingSerializer, ProfileSerializer
 from mainapp.forms import ProfileForm
-from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile
+from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
+	TeacherTimetable
 from mainapp.strings import STRINGS
 
 
@@ -183,11 +185,53 @@ def profile(request, id):
 
 def create_booking(request):
 	obj = None
+	# TODO: WARNING this function is a representation of a bad code.
 
 	if request.method == 'POST':
-		day = datetime.datetime.strptime(request.POST['day'][3: 15], '%b %d %Y')
-		obj = LessonBooking.objects.create(datetime=request.POST['day'], lesson__id=request.POST['lesson_id'],
-		                                   user=request.POST['user_id'])
+		day = datetime.datetime.strptime(request.POST['day'][4: 15], '%b %d %Y')
+		time = request.POST['time'].split(':')
+		day = day.replace(hour=int(time[0]), minute=int(time[1]))
+
+		lesson = Lesson.objects.get(id=request.POST['lesson_id'])
+
+		# looking for timetable booking
+		bookings_list = LessonBooking.objects.filter(datetime=day, lesson=lesson)
+		if len(bookings_list):
+			timetable = bookings_list[0]
+			if timetable.lesson.is_group and len(bookings_list) + 1 <= timetable.lesson.places:
+				# creating one more booking for group lesson
+				obj = LessonBooking.objects.create(datetime=day,
+				                                   lesson=lesson,
+				                                   user=User.objects.get(id=request.POST['user_id']),
+				                                   timetable_booking=timetable.timetable_booking)
+				if len(bookings_list) + 1 == timetable.lesson.places:
+					obj.timetable_booking.status = TeacherTimetableBooking.BOOKED
+					obj.timetable_booking.save()
+
+			elif timetable.lesson.is_group and len(
+					bookings_list) + 1 > timetable.lesson.places or not timetable.lesson.is_group and len(
+				bookings_list) == 1:
+				# if there is no enough places in group lesson or lesson is already booked
+				if 'type' in request.GET:
+					if request.GET['type'] == 'redirect':
+						messages.error(request, 'No enough places in lesson')
+
+				return JsonResponse({'code': 500, 'error': 'No enough places in lesson'})
+		elif len(bookings_list) == 0:
+			# if there is no any bookings and the place is free
+			# create timetable booking
+			lesson_booking = LessonBooking.objects.create(
+				datetime=day,
+				lesson=lesson,
+				user=User.objects.get(id=request.POST['user_id']))
+
+			ttb = TeacherTimetableBooking.objects.create(
+				lesson_booking=lesson_booking,
+				timetable=TeacherTimetable.objects.get(user=lesson_booking.lesson.lesson_type.user),
+				status=TeacherTimetableBooking.BOOKED if not lesson_booking.lesson.is_group else TeacherTimetableBooking.PENDING)
+
+			lesson_booking.timetable_booking = ttb
+			lesson_booking.save()
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':
