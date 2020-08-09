@@ -68,6 +68,7 @@
         let lessons = [];
         APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
             // creating timetable
+            console.log(user);
             hours = [];
             let i, j;
             for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0]) + 1; i++) {
@@ -144,7 +145,7 @@
                                         <div class="user-avatar">
                                             <img src="${user.profile.avatar}">
                                         </div>
-                                        <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login}</h6>
+                                        <h6 class="disabled">{{ text.keywords.last_login }}: ${user.last_login.toString().replace('T', ' ').replace('Z', '').slice(0, 19)}</h6>
                                     </div>
                                     <div class="col-6">
                                         <h3>${user.first_name} ${user.last_name}</h3>
@@ -264,6 +265,10 @@
             $('#bottom-modal-price').text(`{{ text.keywords.price }}: ${course.price}`);
             $('#lesson_id').val(course.id);
 
+
+            // clearing selects
+            $("#lesson_day").html('');
+            $("#lesson_time").html('');
 
             // inserting data into selects
             for (let day of days) {

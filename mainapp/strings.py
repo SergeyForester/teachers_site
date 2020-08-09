@@ -17,6 +17,11 @@ STRINGS = {
 		},
 		'auth': {
 			'login': 'Логин', 'sign_up': 'Регистрация', 'password': 'Пароль'
+		},
+		'booking_confirmation': {
+			'booking_confirmation': 'Подтверждение урока', 'you_have_booked_a_lesson': 'Вы забронировали урок',
+			'new_lesson_booking': 'Новое бронирование урока', "user_have_booked_a_lesson": 'забронировал урок'
+			, 'new_booking': 'Новое бронирование'
 		}
 	},
 	'en': {
@@ -36,6 +41,10 @@ STRINGS = {
 		},
 		'auth': {
 			'login': 'Sign in', 'sign_up': 'Sign up', 'password': 'Password'
+		},
+		'booking_confirmation': {
+			'booking_confirmation': 'Booking confirmation', 'you_have_booked_a_lesson': 'You have booked a lesson',
+			"user_have_booked_a_lesson": 'have booked the lesson', 'new_booking': 'New booking'
 		}
 	}
 }

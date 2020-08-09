@@ -4,20 +4,18 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import get_object_or_404
 # Create your views here.
-from django.views.generic import UpdateView
 from googletrans import Translator
-from rest_framework import viewsets, permissions
-from rest_framework.response import Response
+from rest_framework import viewsets
 
-from apiapp.serializers import UserSerializer, LessonSerializer, CourseTypeSerializer, LessonBookingSerializer, \
-	TeacherTimetableBookingSerializer, ProfileSerializer
+from apiapp.serializers import UserSerializer, LessonSerializer, LessonBookingSerializer, \
+	TeacherTimetableBookingSerializer
 from mainapp.forms import ProfileForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
-from mainapp.strings import STRINGS
+from mainapp.utils import send_letter, get_language
+from teachers import settings
 
 
 class UsersView(viewsets.ModelViewSet):
@@ -217,6 +215,7 @@ def create_booking(request):
 						messages.error(request, 'No enough places in lesson')
 
 				return JsonResponse({'code': 500, 'error': 'No enough places in lesson'})
+
 		elif len(bookings_list) == 0:
 			# if there is no any bookings and the place is free
 			# create timetable booking
@@ -232,6 +231,35 @@ def create_booking(request):
 
 			lesson_booking.timetable_booking = ttb
 			lesson_booking.save()
+
+			data = get_language(request)['booking_confirmation']
+
+			# send confirmation letters to user and teacher
+			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER, [lesson_booking.user.email],
+				{
+					'letter_title': data['booking_confirmation'],
+					'client_name': lesson_booking.user.first_name,
+					'message_title': data['you_have_booked_a_lesson'],
+					'items': [
+						f'Lesson: {lesson_booking.lesson.name}',
+						f'Time: {str(lesson_booking.datetime)[:-3]}',
+						f'Teacher: {lesson_booking.lesson.lesson_type.user.first_name}',
+						f'Price: {lesson_booking.lesson.price}',
+					]
+				})
+
+			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
+				[lesson_booking.lesson.lesson_type.user.email],
+				{
+					'letter_title': data['new_booking'],
+					'client_name': lesson_booking.user.first_name,
+					'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
+					'items': [
+						f'Lesson: {lesson_booking.lesson.name}',
+						f'Time: {str(lesson_booking.datetime)[:-3]}',
+						f'User: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
+					]}
+				)
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':

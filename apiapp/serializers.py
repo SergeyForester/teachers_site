@@ -15,7 +15,7 @@ class UserSerializer(ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ('id', 'first_name', 'last_name', 'email', 'profile')
+		fields = ('id', 'first_name', 'last_name', 'email', 'profile', 'last_login')
 
 
 class CourseTypeSerializer(ModelSerializer):

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Title</title>
+    <style>
+        body {
+            /*background-color: #f9f9f9;*/
+        }
+
+        .content {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+
+        .content {
+            margin: auto;
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 481px) {
+            .content {
+                width: 70%;
+            }
+        }
+
+        .header {
+            /*background-color: #b43de2;*/
+            color: white;
+        }
+
+        .font {
+            font-family: Gotham SSm A, Gotham SSm B, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, Arial, sans-serif;
+            font-weight: 700;
+            font-size: 25px;
+            margin-left: 7px;
+        }
+
+        /*.btn {*/
+        /*    background-color: #b43de2;*/
+        /*    color: white;*/
+        /*}*/
+        p {
+            margin-left: 7px;
+        }
+    </style>
+</head>
+<body>
+<table class="content">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table style="width: 100%" class="header">
+                <tr>
+                    <td><p class="font" style="height:20px">{{ letter_title }}</p></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p class="font">Hello, {{ client_name }}!</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p class="message">
+                {{ message_title }}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <ul style="list-style: none; padding: 0;margin: 0;">
+                {% for item in items %}
+                    <li><p class="font" style="font-size: 20px">{{ item }}</p></li>
+                    <hr>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
