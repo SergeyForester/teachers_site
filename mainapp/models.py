@@ -19,8 +19,9 @@ class Profile(models.Model):
 	avatar = models.FileField(upload_to='avatars', default='avatars/default.png')
 	video = models.FileField(upload_to='videos', null=True, blank=True)
 	starting_price = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
-	work_day_start = models.CharField(max_length=5, default='08:00')
-	work_day_end = models.CharField(max_length=5, default='20:00')
+	card_number = models.CharField(max_length=20, verbose_name="Card number")
+	work_day_start = models.CharField(max_length=5, default='08:00', verbose_name="Work day start")
+	work_day_end = models.CharField(max_length=5, default='20:00', verbose_name="Work day end")
 
 	def __str__(self):
 		return self.user.first_name
@@ -40,6 +41,8 @@ def save_user_profile(sender, instance, **kwargs):
 class CourseType(models.Model):
 	name = models.CharField(max_length=100)
 
+	def __str__(self):
+		return self.name
 
 class LessonType(models.Model):
 	course_type = models.ForeignKey(CourseType, on_delete=models.CASCADE)

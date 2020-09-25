@@ -51,17 +51,14 @@
         </div>
     </nav>
 </div>
-{% block content %}
-
-
-
-{% endblock %}
+<div id="app">
+    {% block content %}
+    {% endblock %}
+</div>
 <!-- Footer -->
 <footer class="page-footer font-small blue">
-
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="https://teachhub.us/" style="display: inline-block"> TeachHub.us</a>
         <div class="ml-auto" style="display: inline-block; text-align: right!important;">
             <form action="{% url 'main:change_language' %}"
                   id="change_language" method="post">
@@ -73,7 +70,11 @@
                 </select>
             </form>
         </div>
+        <br>
+        <a href="/" style="display: inline-block">TeachHub.us</a>
+        <a href="{% url 'main:become_a_teacher' %}">{{ text.profile.become_a_teacher }}</a>
     </div>
 </footer>
+
 </body>
 </html>

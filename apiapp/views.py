@@ -1,19 +1,24 @@
 import datetime
 
+import schedule as schedule
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 # Create your views here.
 from googletrans import Translator
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apiapp.serializers import UserSerializer, LessonSerializer, LessonBookingSerializer, \
 	TeacherTimetableBookingSerializer
-from mainapp.forms import ProfileForm
+from mainapp.forms import ProfileForm, LessonForm, TeacherForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
+from mainapp.tasks import lesson_complete_confirmation
 from mainapp.utils import send_letter, get_language
 from teachers import settings
 
@@ -71,13 +76,13 @@ class UserView(viewsets.ModelViewSet):
 		return get_object_or_404(User, pk=self.kwargs['id'])
 
 
-class UserCoursesView(viewsets.ModelViewSet):
+class UserCoursesView(APIView):
 	serializer_class = LessonSerializer
 
-	def get_queryset(self):
+	def get(self, request, id):
 		print('User lessons view...')
-		lessons = Lesson.objects.filter(lesson_type__user__id=self.kwargs['id'])
-		if not len(lessons): return lessons
+		lessons = Lesson.objects.filter(lesson_type__user__id=id)
+		if not len(lessons): return Response(LessonSerializer(lessons, many=True).data)
 
 		if 'lang' in self.request.query_params:
 			translator = Translator()
@@ -85,15 +90,76 @@ class UserCoursesView(viewsets.ModelViewSet):
 			res = []
 			for lesson in lessons:
 				lesson.name = translator.translate(lesson.name,
-				                                   dest=self.request.query_params['lang']).text.capitalize()
+				                                   dest=self.request.GET['lang']).text.capitalize()
 				lesson.lesson_type.course_type.name = translator.translate(lesson.lesson_type.course_type.name,
-				                                                           dest=self.request.query_params[
+				                                                           dest=self.request.GET[
 					                                                           'lang']).text.capitalize()
 				res.append(lesson)
 
-			return res
+			return Response(LessonSerializer(res, many=True).data)
 
-		return lessons
+		return Response(LessonSerializer(lessons, many=True).data)
+
+	def post(self, request, id):
+		# if lesson_type is a course_type
+		if 'course_type' in request.GET and request.GET['course_type'] == 'true':
+			# if there is no such lesson type
+			course_type = CourseType.objects.get(id=request.data['lesson_type'])
+			if 'user_id' in request.data:
+				lesson_type = LessonType.objects.create(
+					course_type=course_type,
+					user=User.objects.get(id=request.data['user_id'])).id
+			else:
+				return Response({"code": 500, "error": 'user_id is required parameter'})
+
+		# TODO: improve this code
+		else:
+			# or else get it
+			lesson_type = LessonType.objects.get(course_type__id=request.POST['lesson_type']).id
+
+		data = request.data.copy()
+		data['lesson_type'] = lesson_type
+
+		serializer = LessonSerializer(data=data)
+		print(serializer.initial_data)
+
+		# save lesson
+		if serializer.is_valid():
+			lesson = serializer.save()
+
+			# set user's starting_price
+			if lesson.price < lesson.lesson_type.user.profile.starting_price:
+				lesson.lesson_type.user.profile.starting_price = lesson_type.price
+				lesson.lesson_type.user.profile.save()
+
+			if 'redirect' in request.GET and request.GET['redirect'] == 'true':
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+			return Response(LessonSerializer(lesson, many=False).data)
+
+		return Response({"code": 500, "error": 'Data is not valid'})
+
+
+class UserCourseView(APIView):
+	def get(self, request, id, course_id):
+		return Response(LessonSerializer(get_object_or_404(Lesson, lesson_type__user__id=id, id=course_id)).data)
+
+	def put(self, request, id, course_id):
+		lesson = get_object_or_404(Lesson, lesson_type__user__id=id, id=course_id)
+		data = request.data
+		serializer = LessonSerializer(instance=lesson, data=data, partial=True)
+		if serializer.is_valid(raise_exception=True):
+			lesson = serializer.save()
+			return Response(LessonSerializer(lesson, many=False).data)
+		else:
+			return Response({"code": 500, "error": 'Data is not valid'})
+
+	def delete(self, request, id, course_id):
+		obj = LessonType.objects.get(id=course_id).delete()
+		if 'redirect' in request.GET and request.GET['redirect'] == 'true':
+			return HttpResponseRedirect(request.META.get(['HTTP_REFERER'], '/'))
+
+		return Response(LessonSerializer(obj, many=False).data)
 
 
 class UserTeachersView(viewsets.ModelViewSet):
@@ -133,14 +199,18 @@ def courses_view(request):
 
 		return JsonResponse(data, safe=False)
 	else:
-		return JsonResponse(list(courses), safe=False)
+		print([model_to_dict(item) for item in courses])
+		return JsonResponse([model_to_dict(item) for item in courses], safe=False)
 
 
-class UserLessonsView(viewsets.ModelViewSet):
+class UserLessonsView(APIView):
 	serializer_class = LessonBookingSerializer
 
-	def get_queryset(self):
-		queryset = LessonBooking.objects.filter(user__id=self.kwargs['id'])
+	def get(self, request, id):
+		if 'teacher' in self.request.query_params and self.request.query_params['teacher'] == 'true':
+			queryset = LessonBooking.objects.filter(lesson__lesson_type__user__id=id)
+		else:
+			queryset = LessonBooking.objects.filter(user__id=id)
 
 		if 'completed' in self.request.query_params:
 			if self.request.query_params['completed'] == "true":
@@ -148,7 +218,8 @@ class UserLessonsView(viewsets.ModelViewSet):
 			elif self.request.query_params['completed'] == "false":
 				queryset = queryset.filter(is_completed=False)
 
-		return set(queryset.order_by('-lesson__lessonbooking__datetime'))
+		return Response(
+			LessonBookingSerializer(set(queryset.order_by('-lesson__lessonbooking__datetime')), many=True).data)
 
 
 class UserBookingsView(viewsets.ModelViewSet):
@@ -232,34 +303,42 @@ def create_booking(request):
 			lesson_booking.timetable_booking = ttb
 			lesson_booking.save()
 
-			data = get_language(request)['booking_confirmation']
+			text = get_language(request)
+			data = text['booking_confirmation']
+			keywords = text['keywords']
 
 			# send confirmation letters to user and teacher
 			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER, [lesson_booking.user.email],
-				{
-					'letter_title': data['booking_confirmation'],
-					'client_name': lesson_booking.user.first_name,
-					'message_title': data['you_have_booked_a_lesson'],
-					'items': [
-						f'Lesson: {lesson_booking.lesson.name}',
-						f'Time: {str(lesson_booking.datetime)[:-3]}',
-						f'Teacher: {lesson_booking.lesson.lesson_type.user.first_name}',
-						f'Price: {lesson_booking.lesson.price}',
-					]
-				})
+			            {
+				            'letter_title': data['booking_confirmation'],
+				            'client_name': lesson_booking.user.first_name,
+				            'message_title': data['you_have_booked_a_lesson'],
+				            'items': [
+					            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+					            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+					            f'{keywords["teacher"]}: {lesson_booking.lesson.lesson_type.user.first_name}',
+					            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+				            ],
+				            'message_text': data['payment_details']
+			            })
 
 			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
-				[lesson_booking.lesson.lesson_type.user.email],
-				{
-					'letter_title': data['new_booking'],
-					'client_name': lesson_booking.user.first_name,
-					'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
-					'items': [
-						f'Lesson: {lesson_booking.lesson.name}',
-						f'Time: {str(lesson_booking.datetime)[:-3]}',
-						f'User: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
-					]}
-				)
+			            [lesson_booking.lesson.lesson_type.user.email],
+			            {
+				            'letter_title': data['new_booking'],
+				            'client_name': lesson_booking.user.first_name,
+				            'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
+				            'items': [
+					            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+					            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+					            f'{keywords["user"]}: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
+					            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+				            ],
+				            'message_text': ''
+			            })
+
+			# scheduling lesson completion mail
+			lesson_complete_confirmation.delay(request, lesson_booking.user.id, lesson_booking.id)
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':
@@ -267,3 +346,33 @@ def create_booking(request):
 
 	res = model_to_dict(obj)
 	return JsonResponse(res, safe=False)
+
+
+def cost_of_using(request):
+	cost = 0
+
+	if 'user' in request.GET:
+		bookings = LessonBooking.objects.filter(lesson__lesson_type__user__id=request.GET['user'],
+		                                        datetime__month=datetime.datetime.now().month)
+	else:
+		bookings = LessonBooking.objects.filter(datetime__month=datetime.datetime.today().month)
+
+	for booking in bookings:
+		cost += booking.lesson.price
+
+	return JsonResponse({'value': round(float(cost) * 0.07, 2)})
+
+
+def become_a_teacher(request, id):
+	if request.method == "POST":
+		user = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
+		user.is_teacher = True
+		user.save()
+
+		if 'type' in request.GET:
+			if request.GET['type'] == 'redirect':
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+		return JsonResponse(model_to_dict(user), safe=False)
+	else:
+		return JsonResponse({"code": 500, "error": "Invalid request"})

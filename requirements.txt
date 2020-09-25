@@ -1,3 +1,7 @@
 googletrans
 django-rest-framework
 django
+django-celery
+pause
+redis
+django-redis

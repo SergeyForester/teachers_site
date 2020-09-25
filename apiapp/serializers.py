@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from mainapp.models import Profile, Lesson, LessonType, CourseType, LessonBooking, TeacherTimetableBooking
@@ -34,15 +35,31 @@ class LessonTypeSerializer(ModelSerializer):
 
 
 class LessonSerializer(ModelSerializer):
-	lesson_type = LessonTypeSerializer(read_only=True)
-
 	class Meta:
 		model = Lesson
 		fields = "__all__"
 
+	def create(self, validated_data):
+		return Lesson.objects.create(**validated_data)
+
+	def update(self, instance, validated_data):
+		instance.lesson_type = validated_data.get('lesson_type', instance.lesson_type)
+		instance.name = validated_data.get('name', instance.name)
+		instance.price = validated_data.get('price', instance.price)
+		instance.minutes = validated_data.get('minutes', instance.minutes)
+		instance.is_group = validated_data.get('is_group', instance.is_group)
+		instance.places = validated_data.get('places', instance.places)
+		instance.save()
+		return instance
+
+	def to_representation(self, instance):
+		self.fields['lesson_type'] = LessonTypeSerializer(read_only=True)
+		return super(LessonSerializer, self).to_representation(instance)
+
 
 class LessonBookingSerializer(ModelSerializer):
 	lesson = LessonSerializer(read_only=True)
+	user = UserSerializer(read_only=True)
 
 	class Meta:
 		model = LessonBooking

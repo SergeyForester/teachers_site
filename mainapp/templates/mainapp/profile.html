@@ -35,9 +35,12 @@
 
         </form>
     </div>
+
+    <div class="content">
+
+    </div>
+
     <script>
-
-
         APIRequest('/api/v1/users/{{ user_id }}/', function (data) {
             console.log(data);
 
@@ -92,14 +95,14 @@
 
                     $('.preloader').css('display', 'none');
 
-                    if (data.profile.location !== '' || data.profile.birth_date !== '') {
-                        $('#myModal').modal('show');
-                    }
+                    {#if (data.profile.location !== '' || data.profile.birth_date !== '') {#}
+                    {#    $('#myModal').modal('show');#}
+                    {#}#}
 
-                    {#$('footer').css('position', "relative");#}
+                        {#$('footer').css('position', "relative");#}
 
-                    $('body').append(
-                        `<div class="container mt-5">
+                        $('.content').append(
+                            `<div class="container mt-5">
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-12">
                                 <div class="user-block background-white container-radius">
@@ -113,6 +116,19 @@
                                     <h6 class="disabled" id="time"></h6>
                                     <hr>
                                     <a href="#" class="open-profile"><h6>{{ text.profile.your_profile }}</h6></a>
+                                    {% if request.user.profile.is_teacher %}
+                                        <a href="{% url 'main:profile_teacher' %}" class="open-profile">
+                                            <h6>
+                                                {{ text.profile.teaching }}
+                                            </h6>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'main:become_a_teacher' %}" class="open-profile">
+                                            <h6>
+                                                {{ text.profile.become_a_teacher }}
+                                            </h6>
+                                        </a>
+                                    {% endif %}
                                     <a href="/auth/logout/"><h6 class="disabled">{{ text.profile.logout }}</h6></a>
                                 </div>
                             </div>
@@ -149,8 +165,9 @@
                         </div>
                     </div>
                     `
-                    );
-                });
+                        );
+                    }
+                );
             });
         });
         $('body').on('click', '.open-profile', function () {
@@ -165,4 +182,5 @@
         let s = new Date().toLocaleString();
         $('#time').text(s.split(', ')[1]);
     </script>
+
 {% endblock %}

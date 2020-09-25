@@ -1,11 +1,5 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
-    <style>
-        body {
-            position: relative;
-            min-height: 100%;
-        }
-    </style>
 
     <div class="preloader"></div>
 
@@ -63,6 +57,38 @@
         </div>
     </div>
     <script>
+        function getBooking(day, hour, bookings) {
+            for (let booking of bookings) {
+                let bookingDate = new Date(booking.lesson_booking.datetime);
+
+                let bookingDateDay = new Date(bookingDate);
+                bookingDateDay.setHours(0, 0, 0, 0);
+                day.setHours(0, 0, 0, 0);
+
+
+                if (bookingDateDay.getTime() === day.getTime()) {
+                    if (bookingDate.getTime() === hour.getTime()) {
+                        return [true, booking];
+                    }
+                }
+            }
+
+            return [false, null];
+        }
+
+        APIRequest('/api/v1/users/{{ user_id }}/lessons/?teacher=true', function (upcoming_lessons) {
+            let completed_lessons_counter = 0;
+
+            for (let lesson of upcoming_lessons) {
+                if (lesson.is_completed) {
+                    completed_lessons_counter++;
+                }
+
+            }
+
+            $('#completed-lessons-counter').text(completed_lessons_counter);
+        });
+
         let days = [];
         let hours = [];
         let lessons = [];
@@ -168,6 +194,8 @@
                                 <div class="row p-4">
                                     <h5>{{ text.keywords.about_me }}</h5>
                                     <p>${user.profile.bio}</p>
+
+                                    <h5>{{ text.profile.completed_lessons }}: <span id="completed-lessons-counter"></span></h5>
                                 </div>
                                 <hr>
                                 <div>
@@ -179,8 +207,7 @@
                         `)
                 }
             );
-        })
-        ;
+        });
 
 
         APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
@@ -191,7 +218,7 @@
                     let gridCell = '';
                     let hour_ = new Date(day);
 
-                    hour_.setHours(hour.split(':')[0]);
+                    hour_.setHours(parseInt(hour.split(':')[0]));
                     hour_.setMinutes(hour.split(':')[1]);
 
                     let bookingData = getBooking(day, hour_, bookings);
@@ -234,26 +261,8 @@
                 }
             }
 
-            function getBooking(day, hour, bookings) {
-                for (let booking of bookings) {
-                    let bookingDate = new Date(booking.lesson_booking.datetime);
-
-                    let bookingDateDay = new Date(bookingDate);
-                    bookingDateDay.setHours(0, 0, 0, 0);
-                    day.setHours(0, 0, 0, 0);
-
-
-                    if (bookingDateDay.getTime() === day.getTime()) {
-                        if (bookingDate.getTime() === hour.getTime()) {
-                            return [true, booking];
-                        }
-                    }
-                }
-
-                return [false, null];
-            }
-
         });
+
 
         $('body').on('click', '.teacher-course-item', function () {
             {#console.log("Lesson: ", lessons[$(this).data('id')]);#}

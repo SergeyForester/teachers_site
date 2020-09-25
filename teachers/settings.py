@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'mainapp',
     'apiapp',
     'authapp',
-    'rest_framework'
+    'rest_framework',
 ]
 
 AUTHENTICATION_BACKENDS = ['authapp.auth_backend.EmailBackend']
@@ -142,3 +142,12 @@ EMAIL_HOST_PASSWORD = 'server2652'
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# REDIS related settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+
+HOST_NAME = 'http://127.0.0.1:8000/'

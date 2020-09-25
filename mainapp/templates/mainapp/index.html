@@ -1,30 +1,29 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
-    <div id="app">
-        <div class="message-main pb-3">
-            <div class="message-main-text ">
-                {{ text.main.main_message }}
-            </div>
-            <div class="message-main-input">
-                <form action="{% url 'main:teachers_search' %}" class="pb-3" id="course-form" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="course" autocomplete="off" id="course-input"
-                               placeholder="{{ text.main.input_message }}"
-                               aria-label="Recipient's username" aria-describedby="basic-addon2">
-                        <input type="hidden" id="value" name="value" value="">
-                        <div class="input-group-append">
-                            <button class="input-group-text">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </div>
+    <div class="message-main pb-3">
+        <div class="message-main-text ">
+            {{ text.main.main_message }}
+        </div>
+        <div class="message-main-input">
+            <form action="{% url 'main:teachers_search' %}" class="pb-3" id="course-form" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="course" autocomplete="off" id="course-input"
+                           placeholder="{{ text.main.input_message }}"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="hidden" id="value" name="value" value="">
+                    <div class="input-group-append">
+                        <button class="input-group-text">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
                     </div>
-                    <div id="hints-block">
+                </div>
+                <div id="hints-block">
 
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+
     <div id="#courses_data" style="display: none">{{ courses }}</div>
     <div id="#lang" style="display: none">{{ current_lang }}</div>
     <script>
