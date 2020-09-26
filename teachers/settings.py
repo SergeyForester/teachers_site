@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apiapp',
     'authapp',
     'rest_framework',
+    'lesson_confirmation_app'
 ]
 
 AUTHENTICATION_BACKENDS = ['authapp.auth_backend.EmailBackend']
@@ -144,10 +145,9 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # REDIS related settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_BROKER_URL = 'redis://h:p35dfc08bb5d2a659e408bc61dec2d58d0ed77ae61b5cd60e30d48b43e7ff7944@ec2-3-222-186-102.compute-1.amazonaws.com:11459'
+CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 HOST_NAME = 'http://127.0.0.1:8000/'

@@ -23,7 +23,8 @@ STRINGS = {
 			'teaching': 'Обучение',
 			'become_a_teacher': "Стать учителем",
 			'the_preliminary_cost_of_using_system': 'Предварительная стоимость пользования системой',
-			"you_have_become_a_teacher": "Поздравляем! Теперь вы стали учителем."
+			"you_have_become_a_teacher": "Поздравляем! Теперь вы стали учителем.",
+			"now_teaching_functionality_is_available_in_profile": 'Теперь раздел "Преподавание" доступен вам'
 		},
 		'auth': {
 			'login': 'Логин', 'sign_up': 'Регистрация', 'password': 'Пароль'
@@ -56,7 +57,8 @@ STRINGS = {
 			'your_teachers': 'Your teachers', 'logout': 'Logout', 'your_profile': 'Your profile',
 			'teaching': 'Teaching', 'become_a_teacher': "Become a teacher",
 			'the_preliminary_cost_of_using_system': 'The preliminary cost of using the system',
-			"you_have_become_a_teacher": "Congratulations! Now you have become a teacher."
+			"you_have_become_a_teacher": "Congratulations! Now you have become a teacher.",
+			"now_teaching_functionality_is_available_in_profile": 'Now the "Teaching" section is available to you'
 		},
 		'auth': {
 			'login': 'Sign in', 'sign_up': 'Sign up', 'password': 'Password'

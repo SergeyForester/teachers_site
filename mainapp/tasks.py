@@ -20,6 +20,8 @@ def lesson_complete_confirmation(request, user_id, lesson_booking_id):
 	confirmation_text = text['booking_confirmation']
 
 	user = User.objects.get(id=user_id)
+
+	# sending email to student
 	return send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
 	                   [user.email],
 	                   {

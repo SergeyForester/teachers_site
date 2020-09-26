@@ -2,29 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="timetable">
-      <change afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/profile_teacher.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/confirmation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson_confirmation_app/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiapp/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/strings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/letters/simple_letter.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/letters/simple_letter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teachers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,8 +40,8 @@
       <list>
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -102,7 +87,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager" selected="Django server.teachers">
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="teachers" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -254,6 +239,8 @@
       <workItem from="1599244620622" duration="91000" />
       <workItem from="1600935430785" duration="4264000" />
       <workItem from="1601056717119" duration="4983000" />
+      <workItem from="1601129097072" duration="7000" />
+      <workItem from="1601149496916" duration="2564000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -288,7 +275,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/teachers$main.coverage" NAME="main Coverage Results" MODIFIED="1596008872938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../python_projects/sqlviewer" />
-    <SUITE FILE_PATH="coverage/teachers_site$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1601060845970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../python_projects/sqlviewer" />
+    <SUITE FILE_PATH="coverage/teachers_site$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1601150097292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../python_projects/sqlviewer" />
     <SUITE FILE_PATH="coverage/teachers_site$utils.coverage" NAME="utils Coverage Results" MODIFIED="1596787333056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mainapp" />
   </component>
 </project>

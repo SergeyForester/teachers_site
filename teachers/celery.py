@@ -9,7 +9,7 @@ from teachers import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'teachers.settings')
 
-app = Celery('teachers', broker="redis://localhost:6379/0")
+app = Celery('teachers', broker="redis://h:p35dfc08bb5d2a659e408bc61dec2d58d0ed77ae61b5cd60e30d48b43e7ff7944@ec2-3-222-186-102.compute-1.amazonaws.com/0")
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

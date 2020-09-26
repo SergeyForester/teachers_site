@@ -6,6 +6,7 @@
             <h5>{{ text.profile.become_a_teacher }}</h5>
             {% if request.user.profile.is_teacher %}
                 <h4>{{ text.profile.you_have_become_a_teacher }}</h4>
+                <h5>{{ text.profile.now_teaching_functionality_is_available_in_profile }}</h5>
             {% else %}
                 <form action="/api/v1/users/{{ user_id }}/teaching/start/?type=redirect" method="post">
                     {% csrf_token %}
