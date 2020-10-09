@@ -3,5 +3,6 @@ django-rest-framework
 django
 django-celery
 pause
-redis
+redis==2.10.6
 django-redis
+celery

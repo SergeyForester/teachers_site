@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/', include("apiapp.urls")),
     path('', include("mainapp.urls", namespace="main")),
     path('auth/', include("authapp.urls", namespace="auth")),
+    path('lessons/', include("lesson_confirmation_app.urls", namespace="lessons")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

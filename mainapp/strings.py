@@ -67,8 +67,9 @@ STRINGS = {
 			'booking_confirmation': 'Booking confirmation', 'you_have_booked_a_lesson': 'You have booked a lesson',
 			"user_have_booked_a_lesson": 'have booked the lesson', 'new_booking': 'New booking',
 			'payment_details': "You will pay after the end of the lesson. We will send you the teacher's bank details",
+			'student_confirmed_the_lesson': "Your {} student confirmed the end of the lesson.",
 			'confirmation_of_the_end': 'Confirmation of the end of the lesson',
-			'please_pay_the_teacher': 'Please pay the teacher. Then the lesson will be confirmed by teacher'
+			'please_pay_the_teacher': 'Please pay the teacher. Then confirm the end of the lesson'
 		}
 	}
 }

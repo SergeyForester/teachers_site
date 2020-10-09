@@ -1,6 +1,4 @@
 import datetime
-
-import schedule as schedule
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -18,8 +16,8 @@ from apiapp.serializers import UserSerializer, LessonSerializer, LessonBookingSe
 from mainapp.forms import ProfileForm, LessonForm, TeacherForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
-from mainapp.tasks import lesson_complete_confirmation
-from mainapp.utils import send_letter, get_language
+from mainapp.tasks import lesson_complete_confirmation, send_letter
+from mainapp.utils import get_language
 from teachers import settings
 
 
@@ -253,7 +251,7 @@ def profile(request, id):
 
 
 def create_booking(request):
-	obj = None
+	lesson_booking = None
 	# TODO: WARNING this function is a representation of a bad code.
 
 	if request.method == 'POST':
@@ -269,13 +267,13 @@ def create_booking(request):
 			timetable = bookings_list[0]
 			if timetable.lesson.is_group and len(bookings_list) + 1 <= timetable.lesson.places:
 				# creating one more booking for group lesson
-				obj = LessonBooking.objects.create(datetime=day,
+				lesson_booking = LessonBooking.objects.create(datetime=day,
 				                                   lesson=lesson,
 				                                   user=User.objects.get(id=request.POST['user_id']),
 				                                   timetable_booking=timetable.timetable_booking)
 				if len(bookings_list) + 1 == timetable.lesson.places:
-					obj.timetable_booking.status = TeacherTimetableBooking.BOOKED
-					obj.timetable_booking.save()
+					lesson_booking.timetable_booking.status = TeacherTimetableBooking.BOOKED
+					lesson_booking.timetable_booking.save()
 
 			elif timetable.lesson.is_group and len(
 					bookings_list) + 1 > timetable.lesson.places or not timetable.lesson.is_group and len(
@@ -297,55 +295,58 @@ def create_booking(request):
 
 			ttb = TeacherTimetableBooking.objects.create(
 				lesson_booking=lesson_booking,
-				timetable=TeacherTimetable.objects.get(user=lesson_booking.lesson.lesson_type.user),
+				timetable=TeacherTimetable.objects.get(user__id=lesson_booking.lesson.lesson_type.user.id),
 				status=TeacherTimetableBooking.BOOKED if not lesson_booking.lesson.is_group else TeacherTimetableBooking.PENDING)
 
 			lesson_booking.timetable_booking = ttb
 			lesson_booking.save()
 
-			text = get_language(request)
-			data = text['booking_confirmation']
-			keywords = text['keywords']
+		text = get_language(request)
+		data = text['booking_confirmation']
+		keywords = text['keywords']
 
-			# send confirmation letters to user and teacher
-			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER, [lesson_booking.user.email],
-			            {
-				            'letter_title': data['booking_confirmation'],
-				            'client_name': lesson_booking.user.first_name,
-				            'message_title': data['you_have_booked_a_lesson'],
-				            'items': [
-					            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
-					            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
-					            f'{keywords["teacher"]}: {lesson_booking.lesson.lesson_type.user.first_name}',
-					            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
-				            ],
-				            'message_text': data['payment_details']
-			            })
+		# send confirmation letters to user and teacher
+		send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER, [lesson_booking.user.email],
+		            {
+			            'letter_title': data['booking_confirmation'],
+			            'client_name': lesson_booking.user.first_name,
+			            'message_title': data['you_have_booked_a_lesson'],
+			            'items': [
+				            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+				            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+				            f'{keywords["teacher"]}: {lesson_booking.lesson.lesson_type.user.first_name}',
+				            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+			            ],
+			            'message_text': data['payment_details']
+		            })
 
-			send_letter('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
-			            [lesson_booking.lesson.lesson_type.user.email],
-			            {
-				            'letter_title': data['new_booking'],
-				            'client_name': lesson_booking.user.first_name,
-				            'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
-				            'items': [
-					            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
-					            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
-					            f'{keywords["user"]}: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
-					            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
-				            ],
-				            'message_text': ''
-			            })
+		send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
+		            [lesson_booking.lesson.lesson_type.user.email],
+		            {
+			            'letter_title': data['new_booking'],
+			            'client_name': lesson_booking.user.first_name,
+			            'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
+			            'items': [
+				            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+				            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+				            f'{keywords["user"]}: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
+				            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+			            ],
+			            'message_text': ''
+		            })
 
-			# scheduling lesson completion mail
-			lesson_complete_confirmation.delay(request, lesson_booking.user.id, lesson_booking.id)
+		# scheduling lesson completion mail
+		lesson_complete_confirmation.delay(lesson_booking.user.id, lesson_booking.id)
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-	res = model_to_dict(obj)
-	return JsonResponse(res, safe=False)
+		res = model_to_dict(lesson_booking)
+		return JsonResponse(res, safe=False)
+
+	else:
+		raise Exception("Invalid method")
 
 
 def cost_of_using(request):
@@ -365,14 +366,16 @@ def cost_of_using(request):
 
 def become_a_teacher(request, id):
 	if request.method == "POST":
-		user = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
-		user.is_teacher = True
-		user.save()
+		profile = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
+		profile.is_teacher = True
+		profile.save()
+
+		TeacherTimetable.objects.create(user=profile.user)
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-		return JsonResponse(model_to_dict(user), safe=False)
+		return JsonResponse(model_to_dict(profile), safe=False)
 	else:
 		return JsonResponse({"code": 500, "error": "Invalid request"})

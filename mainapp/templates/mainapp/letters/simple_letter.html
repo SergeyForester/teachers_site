@@ -110,6 +110,13 @@
             </h4>
         </td>
     </tr>
+    {% if link %}
+        <tr>
+            <td>
+                <a href="{{ link.href }}"><button>{{ link.text }}</button></a>
+            </td>
+        </tr>
+    {% endif %}
     </tbody>
 
 </table>

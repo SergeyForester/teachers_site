@@ -2,15 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="timetable">
-      <change afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/confirmation.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lesson_confirmation_app/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/teachers.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/teachers.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/confirmation.html" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/confirmation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/strings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/letters/simple_letter.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/letters/simple_letter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teachers/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/urls.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +36,28 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
@@ -64,14 +92,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\js" />
       <recent name="C:\Users\Serg\PycharmProjects\teachers\authapp" />
       <recent name="C:\Users\Serg\PycharmProjects\teachers\static\img" />
       <recent name="C:\Users\Serg\PycharmProjects\teachers\media\avatars" />
-      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
     </key>
   </component>
@@ -94,8 +122,9 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="PY_PYTHON" value="6" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\Serg\AppData\Local\Programs\Python\Python37-32\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../python_projects/sqlviewer" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -162,7 +191,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="teachers.settings" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Serg\AppData\Local\Programs\Python\Python37-32\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\Serg\Documents\GitHub\teachers_site\venv36\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -178,6 +207,12 @@
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Django server.teachers" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.main (1)" />
+      <item itemvalue="Python.utils" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main (1)" />
@@ -185,6 +220,51 @@
         <item itemvalue="Python.utils" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@5e029662" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@4ea14aa" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@48a4b527" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@c65acbd" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@54fb71f1" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79dd87f6" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@44aa7430" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -241,6 +321,9 @@
       <workItem from="1601056717119" duration="4983000" />
       <workItem from="1601129097072" duration="7000" />
       <workItem from="1601149496916" duration="2564000" />
+      <workItem from="1602155063361" duration="5830000" />
+      <workItem from="1602160944313" duration="752000" />
+      <workItem from="1602226401079" duration="5057000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -273,9 +356,20 @@
     <MESSAGE value="timetable" />
     <option name="LAST_COMMIT_MESSAGE" value="timetable" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/mainapp/tasks.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/teachers$main.coverage" NAME="main Coverage Results" MODIFIED="1596008872938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../python_projects/sqlviewer" />
-    <SUITE FILE_PATH="coverage/teachers_site$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1601150097292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../python_projects/sqlviewer" />
+    <SUITE FILE_PATH="coverage/teachers_site$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1602159281408" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../python_projects/sqlviewer" />
     <SUITE FILE_PATH="coverage/teachers_site$utils.coverage" NAME="utils Coverage Results" MODIFIED="1596787333056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mainapp" />
   </component>
 </project>
