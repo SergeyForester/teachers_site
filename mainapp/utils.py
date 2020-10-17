@@ -1,7 +1,9 @@
 from mainapp.strings import STRINGS
 
 
-def get_language(request):
+def get_language(request=None, lang=None):
+	if lang: return STRINGS[lang]
+
 	if 'language' not in request.session:
 		request.session['language'] = 'en'
 

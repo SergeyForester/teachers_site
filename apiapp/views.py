@@ -11,6 +11,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apiapp import utils
 from apiapp.serializers import UserSerializer, LessonSerializer, LessonBookingSerializer, \
 	TeacherTimetableBookingSerializer
 from mainapp.forms import ProfileForm, LessonForm, TeacherForm
@@ -350,18 +351,8 @@ def create_booking(request):
 
 
 def cost_of_using(request):
-	cost = 0
-
-	if 'user' in request.GET:
-		bookings = LessonBooking.objects.filter(lesson__lesson_type__user__id=request.GET['user'],
-		                                        datetime__month=datetime.datetime.now().month)
-	else:
-		bookings = LessonBooking.objects.filter(datetime__month=datetime.datetime.today().month)
-
-	for booking in bookings:
-		cost += booking.lesson.price
-
-	return JsonResponse({'value': round(float(cost) * 0.07, 2)})
+	cost = utils.cost_of_using(request.POST.get("user", None))
+	return JsonResponse({'value': cost})
 
 
 def become_a_teacher(request, id):

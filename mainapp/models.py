@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import User
 from django.db import models
@@ -19,9 +21,13 @@ class Profile(models.Model):
 	avatar = models.FileField(upload_to='avatars', default='avatars/default.png')
 	video = models.FileField(upload_to='videos', null=True, blank=True)
 	starting_price = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
+	date = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
+
 	card_number = models.CharField(max_length=20, verbose_name="Card number")
 	work_day_start = models.CharField(max_length=5, default='08:00', verbose_name="Work day start")
 	work_day_end = models.CharField(max_length=5, default='20:00', verbose_name="Work day end")
+
+	teacher_registration_date = models.DateTimeField(default=datetime.today())
 
 	def __str__(self):
 		return self.user.first_name

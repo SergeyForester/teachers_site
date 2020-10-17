@@ -11,8 +11,8 @@ STRINGS = {
 			'booking': 'Бронирование', 'price': 'Цена', 'lesson_time': 'Время урока',
 			'lesson_day': 'День урока',
 			'lesson': 'Урок', 'time': 'Время', 'your_courses': 'Ваши уроки',
-			'new': 'Новый(ая)', 'save': 'Сохранить', 'thank_you_for_the_lesson': 'Спасибо за урок',
-			'card_number': 'Номер карты', 'submit': "Отправить"
+			'new': 'Новый(ая)', 'save': 'Сохранить', 'thank_you_for_the_lesson': 'Спасибо за урок.',
+			'card_number': 'Номер карты', 'submit': "Отправить", "confirm": "Подтвердить"
 
 		},
 		'profile': {
@@ -33,9 +33,10 @@ STRINGS = {
 			'booking_confirmation': 'Подтверждение урока', 'you_have_booked_a_lesson': 'Вы забронировали урок',
 			'new_lesson_booking': 'Новое бронирование урока', "user_have_booked_a_lesson": 'забронировал урок',
 			'new_booking': 'Новое бронирование',
+			'student_confirmed_the_lesson': "подтвердил окончание урока.",
 			'payment_details': 'Вы заплатите после окончания урока. Мы пришлем вам банковские реквизиты учителя',
 			'confirmation_of_the_end': 'Подтверждение окончания урока',
-			'please_pay_the_teacher': 'Пожалуйста, заплатите учителю. Затем урок будет подтверждён учителем'
+			'please_pay_the_teacher': 'Пожалуйста, заплатите учителю. Затем урок будет подтверждён.'
 
 		}
 	},
@@ -49,7 +50,7 @@ STRINGS = {
 			'timetable': 'Timetable', 'booking': "Booking", 'price': 'Price', 'lesson_time': 'Lesson time',
 			'lesson_day': 'Lesson day', 'lesson': 'Lesson', 'time': 'Time', 'your_courses': 'Your courses',
 			'new': 'New', 'save': 'Save', 'thank_you_for_the_lesson': 'Thank you for the lesson',
-			'card_number': 'Card number', 'submit': "Submit"
+			'card_number': 'Card number', 'submit': "Submit", "confirm": "Confirm"
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',
@@ -67,7 +68,7 @@ STRINGS = {
 			'booking_confirmation': 'Booking confirmation', 'you_have_booked_a_lesson': 'You have booked a lesson',
 			"user_have_booked_a_lesson": 'have booked the lesson', 'new_booking': 'New booking',
 			'payment_details': "You will pay after the end of the lesson. We will send you the teacher's bank details",
-			'student_confirmed_the_lesson': "Your {} student confirmed the end of the lesson.",
+			'student_confirmed_the_lesson': "confirmed the end of the lesson.",
 			'confirmation_of_the_end': 'Confirmation of the end of the lesson',
 			'please_pay_the_teacher': 'Please pay the teacher. Then confirm the end of the lesson'
 		}

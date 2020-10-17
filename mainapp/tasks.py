@@ -14,6 +14,15 @@ from teachers import settings
 
 
 @shared_task
+def send_letter(template, sender, clients, context):
+	html_m = render_to_string(template, context)
+
+	return send_mail(
+		context['letter_title'], '', sender,
+		clients, html_message=html_m, fail_silently=False)
+
+
+@shared_task
 def lesson_complete_confirmation(user_id, lesson_booking_id):
 	# waiting for the end of lesson
 	lesson_booking = LessonBooking.objects.get(id=lesson_booking_id)
@@ -24,7 +33,7 @@ def lesson_complete_confirmation(user_id, lesson_booking_id):
 	print(time_to_sleep)
 	time.sleep(time_to_sleep)
 
-	text = get_language("ru")
+	text = get_language(lang="ru")
 	confirmation_text = text['booking_confirmation']
 
 	user = User.objects.get(id=user_id)
@@ -41,15 +50,7 @@ def lesson_complete_confirmation(user_id, lesson_booking_id):
 		                   ],
 		                   'message_text': f"{text['keywords']['thank_you_for_the_lesson']}\n{confirmation_text['please_pay_the_teacher']}",
 		                   "link": {
-			                   'href': settings.HOST_NAME + reverse("lessons:confirmation",
-			                                                        kwargs={"id": lesson_booking.id})}
+			                   'href': settings.HOST_NAME.replace("/") + reverse("lessons:confirmation",
+			                                                                     kwargs={"id": lesson_booking.id})},
+		                        "text": text["keywords"]["confirm"]
 	                   })
-
-
-@shared_task
-def send_letter(template, sender, clients, context):
-	html_m = render_to_string(template, context)
-
-	return send_mail(
-		context['letter_title'], '', sender,
-		clients, html_message=html_m, fail_silently=False)
