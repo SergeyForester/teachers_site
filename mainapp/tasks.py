@@ -50,7 +50,8 @@ def lesson_complete_confirmation(user_id, lesson_booking_id):
 		                   ],
 		                   'message_text': f"{text['keywords']['thank_you_for_the_lesson']}\n{confirmation_text['please_pay_the_teacher']}",
 		                   "link": {
-			                   'href': settings.HOST_NAME.replace("/") + reverse("lessons:confirmation",
-			                                                                     kwargs={"id": lesson_booking.id})},
+			                   'href': settings.HOST_NAME.replace("/") + str(reverse("lessons:confirmation",
+			                                                                     kwargs={"id": lesson_booking.id}))[1:]
+		                   },
 		                        "text": text["keywords"]["confirm"]
 	                   })

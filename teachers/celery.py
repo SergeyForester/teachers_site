@@ -25,7 +25,7 @@ app.autodiscover_tasks(settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     'check-teachers-bill-every-day': {
         'task': 'lesson_confirmation_app.tasks.check_teachers_bills',
-        'schedule': crontab(hour=24),
+        'schedule': crontab(hour=23, minute=59),
     },
 }
 app.conf.timezone = 'UTC'

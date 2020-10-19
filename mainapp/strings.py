@@ -12,8 +12,8 @@ STRINGS = {
 			'lesson_day': 'День урока',
 			'lesson': 'Урок', 'time': 'Время', 'your_courses': 'Ваши уроки',
 			'new': 'Новый(ая)', 'save': 'Сохранить', 'thank_you_for_the_lesson': 'Спасибо за урок.',
-			'card_number': 'Номер карты', 'submit': "Отправить", "confirm": "Подтвердить"
-
+			'card_number': 'Номер карты', 'submit': "Отправить", "confirm": "Подтвердить", "pay": "Заплатить",
+			'success': "Успешно"
 		},
 		'profile': {
 			'upcoming_lessons': 'Предстоящие уроки', 'completed_lessons': 'Завершенные уроки',
@@ -37,7 +37,10 @@ STRINGS = {
 			'payment_details': 'Вы заплатите после окончания урока. Мы пришлем вам банковские реквизиты учителя',
 			'confirmation_of_the_end': 'Подтверждение окончания урока',
 			'please_pay_the_teacher': 'Пожалуйста, заплатите учителю. Затем урок будет подтверждён.'
-
+		},
+		'system_usage_fee': {
+			"system_usage_fee": "Плата за использование системы",
+			"total_amount": "Итоговая сумма"
 		}
 	},
 	'en': {
@@ -50,7 +53,8 @@ STRINGS = {
 			'timetable': 'Timetable', 'booking': "Booking", 'price': 'Price', 'lesson_time': 'Lesson time',
 			'lesson_day': 'Lesson day', 'lesson': 'Lesson', 'time': 'Time', 'your_courses': 'Your courses',
 			'new': 'New', 'save': 'Save', 'thank_you_for_the_lesson': 'Thank you for the lesson',
-			'card_number': 'Card number', 'submit': "Submit", "confirm": "Confirm"
+			'card_number': 'Card number', 'submit': "Submit", "confirm": "Confirm", "pay": "Pay",
+			'success': "Success"
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',
@@ -71,6 +75,11 @@ STRINGS = {
 			'student_confirmed_the_lesson': "confirmed the end of the lesson.",
 			'confirmation_of_the_end': 'Confirmation of the end of the lesson',
 			'please_pay_the_teacher': 'Please pay the teacher. Then confirm the end of the lesson'
+		},
+		'system_usage_fee': {
+			"system_usage_fee": "System usage fee",
+			"total_amount": "Total amount"
 		}
+
 	}
 }

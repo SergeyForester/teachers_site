@@ -1,5 +1,18 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class="alert alert-{{ message.tags }}"
+                    {% else %}
+                        class="alert alert-info"
+                    {% endif %}
+                        role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="message-main pb-3">
         <div class="message-main-text ">
             {{ text.main.main_message }}
