@@ -2,15 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/booking_timetable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/lessons_statistics.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apiapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/paying_bill_for_monthly_cost.html" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/pay_usage_fee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/pay_usage_fee.html" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/pay_usage_fee.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/strings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +61,13 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
+        <item name="auth_user: table" type="3d80ac25:SqliteImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
         <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
@@ -74,7 +94,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -85,14 +105,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\img" />
+      <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\fonts\helvetica_neue" />
+      <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\fonts\graphik_web" />
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\js" />
       <recent name="C:\Users\Serg\PycharmProjects\teachers\authapp" />
-      <recent name="C:\Users\Serg\PycharmProjects\teachers\static\img" />
-      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\avatars" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
     </key>
   </component>
@@ -183,6 +203,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="teachers.settings" />
+        <env name="PYDEVD_USE_FRAME_EVAL" value="NO" />
       </envs>
       <option name="SDK_HOME" value="C:\Users\Serg\Documents\GitHub\teachers_site\venv36\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -218,7 +239,22 @@
     <option name="allServicesViewState">
       <serviceView>
         <treeState>
-          <expand />
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@6943f3e6" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@3abed692" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
           <select />
         </treeState>
       </serviceView>
@@ -285,7 +321,9 @@
       <workItem from="1602312257991" duration="6567000" />
       <workItem from="1602822540518" duration="1513000" />
       <workItem from="1602919259286" duration="7252000" />
-      <workItem from="1603107124379" duration="3915000" />
+      <workItem from="1603107124379" duration="10939000" />
+      <workItem from="1603217968301" duration="3830000" />
+      <workItem from="1603254593805" duration="1368000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -301,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602937875797</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="billing celery task">
+      <created>1603111057142</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1603111057142</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,11 +378,6 @@
           <url>file://$PROJECT_DIR$/mainapp/tasks.py</url>
           <line>27</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/lesson_confirmation_app/tasks.py</url>
-          <line>22</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

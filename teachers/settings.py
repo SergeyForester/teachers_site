@@ -146,10 +146,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # REDIS related settings
 
-CELERY_BROKER_URL = 'redis://h:pbad2e057a5c4a1a0039c384db46ca2bd1b5cd1f42edd793f7fe1ae484fd9de71@ec2-46-51-147-91.eu-west-1.compute.amazonaws.com:12819'
+CELERY_BROKER_URL = 'redis://h:pbad2e057a5c4a1a0039c384db46ca2bd1b5cd1f42edd793f7fe1ae484fd9de71@ec2-54-228-162-89.eu-west-1.compute.amazonaws.com:7659'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 HOST_NAME = 'http://127.0.0.1:8000/'
 
-COMMISSION = 0.07
+COMMISSION = 0.1

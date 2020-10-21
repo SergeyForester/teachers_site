@@ -351,7 +351,7 @@ def create_booking(request):
 
 
 def cost_of_using(request):
-	cost = utils.cost_of_using(request.POST.get("user", None))
+	cost = utils.cost_of_using(request.GET.get("user", None))
 	return JsonResponse({'value': cost})
 
 

@@ -1,3 +1,24 @@
+@font-face {
+    font-family: 'Graphik';
+    src: local('Graphik Bold'), local('Graphik-Bold'),
+    url('../fonts/graphik_web/Graphik-Bold.woff2') format('woff2'),
+    url('../fonts/graphik_web/Graphik-Bold.woff') format('woff'),
+    url('../fonts/graphik_web/Graphik-Bold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue Medium'), local('Helvetica-Neue-Medium'),
+    url('../fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff2') format('woff2'),
+    url('../fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff') format('woff'),
+    url('../fonts/helvetica_neue/HelveticaNeueCyr-Medium.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
 .navbar a#projectName {
     color: #FF4338 !important;
     font-weight: 700;
@@ -63,30 +84,33 @@ body {
 
 @media (max-width: 640px) {
     .message-main {
-        height: 70vh;
+        height: 90vh;
     }
 
     .message-main-text {
-        width: 350px;
+        width: 90%;
+        font-size: 70px;
     }
 }
 
 @media (min-width: 641px) {
     .message-main {
-        height: 55vh;
+        height: 90vh;
     }
 
     .message-main-text {
-        width: 400px;
+        width: 90%;
+        font-size: 80px;
     }
 }
 
 .message-main-text {
-    font-size: 44px;
     padding-top: 50px;
     text-align: center;
+    font-weight: 600;
+    line-height: 84px;
     margin: auto;
-    font-family: 'Google Sans Display', 'Heebo', Arial, sans-serif;
+    font-family: "Graphik Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .message-main-input {

@@ -4,23 +4,25 @@
 
     <div class="container">
         <div class="card"></div>
-        <form action="{% url 'lessons:pay_for_using' id %}" method="post">
+        <form action="{% url 'lessons:pay_for_using' id %}" class="mt-2 background-white container-radius" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="">Card number</label>
-                <input type="text" placeholder="Card number" name="number">
+                <input class="form-control" type="text" placeholder="Card number" name="number">
             </div>
             <div class="form-group">
                 <label for="">Cardholder name</label>
-                <input type="text" placeholder="Cardholder name" name="name">
+                <input class="form-control" type="text" placeholder="Cardholder name" name="name">
             </div>
             <div class="form-group">
                 <label for="">Expiry date</label>
-                <input type="text" placeholder="Expiry date" name="expiry">
+                <input class="form-control" type="text" placeholder="Expiry date" name="expiry">
             </div>
             <div class="form-group">
                 <label for="">CVC</label>
-                <input type="text" placeholder="CVC" name="cvc">
+                <input class="form-control" type="text" placeholder="CVC" name="cvc">
             </div>
+            <button type="submit">{{ text.keywords.pay }}</button>
         </form>
     </div>
 

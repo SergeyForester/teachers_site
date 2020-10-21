@@ -47,6 +47,12 @@
                                 <h5 id="bottom-modal-price">{{ text.keywords.lesson_day }}: </h5>
                                 <select name="day" id="lesson_day"></select>
                             </div>
+                            <div class="flex-right ml-5">
+                                <h5>{{ text.keywords.duration }}:
+                                    <span id="bottom-modal-duration"></span>
+                                </h5>
+                            </div>
+
                         </div>
 
                     </div>
@@ -123,7 +129,89 @@
                 </div>`);
             }
 
-            APIRequest(`/api/v1/users/{{ user_id }}/courses/`, function (data) {
+
+        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
+            for (let day of getDates(new Date(), new Date().addDays(5))) {
+                let cells = 0;
+                let is_pending = false;
+                for (let hour of hours) {
+                    let gridCell = '';
+                    let hour_ = new Date(day);
+
+                    hour_.setHours(parseInt(hour.split(':')[0]));
+                    hour_.setMinutes(hour.split(':')[1]);
+
+                    let bookingData = getBooking(day, hour_, bookings);
+                    if (bookingData[0] || cells >= 1) {
+                        if (cells === 0) {
+                            is_pending = false;
+
+                            cells = (bookingData[1].lesson_booking.lesson.minutes / 30) - 1;
+                            console.log(bookingData[1].status);
+                            if (bookingData[1].status === 'pending') {
+                                is_pending = true;
+                            }
+                        } else {
+                            cells--;
+                        }
+                        if (bookingData[1] && bookingData[1].status === 'pending' || is_pending) {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-pending"></div>
+                            </div>
+                            `;
+                        } else {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-booked"></div>
+                            </div>
+                            `;
+                        }
+
+                    } else {
+                        gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-vacant"></div>
+                            </div>
+                        `;
+                    }
+
+                    $(`.${day.toString().slice(0, 3)}`).append(gridCell);
+
+                }
+            }
+
+        });
+
+
+        $('body').on('click', '.teacher-course-item', function () {
+            {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
+            let course = lessons[$(this).data('id')];
+
+            // inserting some texts...
+            $(".bottom-modal").css('display', 'block');
+            $('#bottom-modal-name').text(course.name);
+            $('#bottom-modal-duration').text(`${course.minutes} мин`);
+            $('#bottom-modal-price').text(`{{ text.keywords.price }}: ${course.price}`);
+            $('#lesson_id').val(course.id);
+
+
+            // clearing selects
+            $("#lesson_day").html('');
+            $("#lesson_time").html('');
+
+            // inserting data into selects
+            for (let day of days) {
+                $("#lesson_day").append(`<option value="${day}">${day.toString().slice(0, 10)}</option>`)
+            }
+
+            for (let hour of hours) {
+                $("#lesson_time").append(`<option value="${hour}">${hour}</option>`)
+            }
+
+
+        });
+        APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
                     let coursesHtml = '';
                     let course_types = [];
                     lessons = data;
@@ -209,87 +297,6 @@
             );
         });
 
-
-        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
-            for (let day of getDates(new Date(), new Date().addDays(5))) {
-                let cells = 0;
-                let is_pending = false;
-                for (let hour of hours) {
-                    let gridCell = '';
-                    let hour_ = new Date(day);
-
-                    hour_.setHours(parseInt(hour.split(':')[0]));
-                    hour_.setMinutes(hour.split(':')[1]);
-
-                    let bookingData = getBooking(day, hour_, bookings);
-                    if (bookingData[0] || cells >= 1) {
-                        if (cells === 0) {
-                            is_pending = false;
-
-                            cells = (bookingData[1].lesson_booking.lesson.minutes / 30) - 1;
-                            console.log(bookingData[1].status);
-                            if (bookingData[1].status === 'pending') {
-                                is_pending = true;
-                            }
-                        } else {
-                            cells--;
-                        }
-                        if (bookingData[1] && bookingData[1].status === 'pending' || is_pending) {
-                            gridCell = `
-                            <div class="grid-item">
-                                <div class="grid-item-pending"></div>
-                            </div>
-                            `;
-                        } else {
-                            gridCell = `
-                            <div class="grid-item">
-                                <div class="grid-item-booked"></div>
-                            </div>
-                            `;
-                        }
-
-                    } else {
-                        gridCell = `
-                            <div class="grid-item">
-                                <div class="grid-item-vacant"></div>
-                            </div>
-                        `;
-                    }
-
-                    $(`.${day.toString().slice(0, 3)}`).append(gridCell);
-
-                }
-            }
-
-        });
-
-
-        $('body').on('click', '.teacher-course-item', function () {
-            {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
-            let course = lessons[$(this).data('id')];
-
-            // inserting some texts...
-            $(".bottom-modal").css('display', 'block');
-            $('#bottom-modal-name').text(course.name);
-            $('#bottom-modal-price').text(`{{ text.keywords.price }}: ${course.price}`);
-            $('#lesson_id').val(course.id);
-
-
-            // clearing selects
-            $("#lesson_day").html('');
-            $("#lesson_time").html('');
-
-            // inserting data into selects
-            for (let day of days) {
-                $("#lesson_day").append(`<option value="${day}">${day.toString().slice(0, 10)}</option>`)
-            }
-
-            for (let hour of hours) {
-                $("#lesson_time").append(`<option value="${hour}">${hour}</option>`)
-            }
-
-
-        });
         $('.pointer').click(function () {
             $('.bottom-modal').css('display', 'none');
         });

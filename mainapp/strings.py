@@ -2,7 +2,7 @@ STRINGS_LANGUAGES = ['ru', 'en']  # list of available languages
 STRINGS = {
 	'ru': {
 		'header': {'home': 'Главная', 'profile': 'Профиль', 'teachers': 'Учителя'},
-		'main': {'main_message': 'Изучите всё о вашем предмете изучения!',
+		'main': {'main_message': 'Познайте новое с TeachHub',
 		         'input_message': 'Введите ваш предмет изучения'},
 		'keywords': {
 			'teacher': "Учитель", 'teaches': 'Обучает', 'from': 'От', 'user': 'Пользователь',
@@ -13,7 +13,7 @@ STRINGS = {
 			'lesson': 'Урок', 'time': 'Время', 'your_courses': 'Ваши уроки',
 			'new': 'Новый(ая)', 'save': 'Сохранить', 'thank_you_for_the_lesson': 'Спасибо за урок.',
 			'card_number': 'Номер карты', 'submit': "Отправить", "confirm": "Подтвердить", "pay": "Заплатить",
-			'success': "Успешно"
+			'success': "Успешно", "duration": "Продолжительность"
 		},
 		'profile': {
 			'upcoming_lessons': 'Предстоящие уроки', 'completed_lessons': 'Завершенные уроки',
@@ -40,12 +40,13 @@ STRINGS = {
 		},
 		'system_usage_fee': {
 			"system_usage_fee": "Плата за использование системы",
-			"total_amount": "Итоговая сумма"
+			"total_amount": "Итоговая сумма",
+			"pay_by": "Заплатить до:"
 		}
 	},
 	'en': {
 		'header': {'home': 'Home', 'profile': 'Profile', 'teachers': 'Teachers'},
-		'main': {'main_message': 'Learn everything about your subject of study!',
+		'main': {'main_message': 'Learn new things with TeachHub',
 		         'input_message': 'Enter your subject of study'},
 		'keywords': {
 			'teacher': "Teacher", 'teaches': 'Teaches', 'from': 'From', 'user': 'User',
@@ -54,7 +55,7 @@ STRINGS = {
 			'lesson_day': 'Lesson day', 'lesson': 'Lesson', 'time': 'Time', 'your_courses': 'Your courses',
 			'new': 'New', 'save': 'Save', 'thank_you_for_the_lesson': 'Thank you for the lesson',
 			'card_number': 'Card number', 'submit': "Submit", "confirm": "Confirm", "pay": "Pay",
-			'success': "Success"
+			'success': "Success", "duration": "Duration"
 		},
 		'profile': {
 			'upcoming_lessons': 'Upcoming lessons', 'completed_lessons': 'Completed lessons',
@@ -78,7 +79,8 @@ STRINGS = {
 		},
 		'system_usage_fee': {
 			"system_usage_fee": "System usage fee",
-			"total_amount": "Total amount"
+			"total_amount": "Total amount",
+			"pay_by": "Pay by:"
 		}
 
 	}
