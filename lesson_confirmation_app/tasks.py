@@ -40,37 +40,39 @@ def check_teachers_bills():
 			if count_from + datetime.timedelta(minutes=35) >= today:
 				total_amount = utils.cost_of_using(teacher.id)
 
-				if total_amount:
-					# create bill
+				if total_amount < 150:
+					total_amount = 150
 
-					bill = TeacherBill.objects.create(
-						teacher=teacher,
-						pay_by=today + datetime.timedelta(days=1),
-						total_amount=total_amount
-					)
-					# send email with bill
-					text = get_language(lang="ru")
-					usage_fee_text = text['system_usage_fee']
+				# create bill
+				bill = TeacherBill.objects.create(
+					teacher=teacher,
+					pay_by=today + datetime.timedelta(days=1),
+					total_amount=total_amount
+				)
 
-					send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
-					                  [teacher.email],
-					                  {
-						                  'letter_title': usage_fee_text['system_usage_fee'],
-						                  'client_name': teacher.first_name,
-						                  'message_title': usage_fee_text['system_usage_fee'],
-						                  'items': [
-							                  f'{usage_fee_text["total_amount"]}: {total_amount}',
-							                  f'{usage_fee_text["pay_by"]} {bill.pay_by}',
-						                  ],
-						                  'message_text': "",
-						                  "link": {
-							                  'href': settings.HOST_NAME + str(reverse("lessons:pay_for_using",
-							                                                        kwargs={
-								                                                        "id": bill.id
-							                                                        }))[1:]
-						                  },
-						                  "text": text["keywords"]["pay"]
-					                  })
+				# send email with bill
+				text = get_language(lang="ru")
+				usage_fee_text = text['system_usage_fee']
+
+				send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
+				                  [teacher.email],
+				                  {
+					                  'letter_title': usage_fee_text['system_usage_fee'],
+					                  'client_name': teacher.first_name,
+					                  'message_title': usage_fee_text['system_usage_fee'],
+					                  'items': [
+						                  f'{usage_fee_text["total_amount"]}: {total_amount}',
+						                  f'{usage_fee_text["pay_by"]} {bill.pay_by}',
+					                  ],
+					                  'message_text': "",
+					                  "link": {
+						                  'href': settings.HOST_NAME + str(reverse("lessons:pay_for_using",
+						                                                        kwargs={
+							                                                        "id": bill.id
+						                                                        }))[1:]
+					                  },
+					                  "text": text["keywords"]["pay"]
+				                  })
 
 		# banning part
 		if len(bills):

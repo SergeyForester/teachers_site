@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/graphik_web/Graphik-Bold.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/helvetica_neue/HelveticaNeueCyr-Medium.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/img/booking_timetable.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/img/lessons_statistics.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/pay_usage_fee.html" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/templates/lesson_confirmation_app/pay_usage_fee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/strings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -323,7 +303,8 @@
       <workItem from="1602919259286" duration="7252000" />
       <workItem from="1603107124379" duration="10939000" />
       <workItem from="1603217968301" duration="3830000" />
-      <workItem from="1603254593805" duration="1368000" />
+      <workItem from="1603254593805" duration="2196000" />
+      <workItem from="1603428533623" duration="235000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -346,7 +327,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603111057142</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="unbanning user, billing system and index.html changes">
+      <created>1603256200397</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1603256200397</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,7 +357,8 @@
     <MESSAGE value="booking" />
     <MESSAGE value="timetable" />
     <MESSAGE value="billing celery task" />
-    <option name="LAST_COMMIT_MESSAGE" value="billing celery task" />
+    <MESSAGE value="unbanning user, billing system and index.html changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="unbanning user, billing system and index.html changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
