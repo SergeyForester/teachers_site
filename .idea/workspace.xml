@@ -2,8 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/teachers_site.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/teachers.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/teachers.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/avatars/IMG_20190927_091836.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/videos/default_JxSW8PM.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,18 +56,6 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
       </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
-        <item name="auth_user: table" type="3d80ac25:SqliteImplModel$Table" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default" type="feb32156:DbDataSourceImpl" />
-        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
     </expand>
     <select />
   </component>
@@ -69,12 +75,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Serg\Documents\GitHub\teachers_site\.idea" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1eckTWEKkh52wFIXC6oWm6WsvX1" />
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
+    <property name="last_opened_file_path" value="C:/Python/geekbrains-homework" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -108,7 +121,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.teachers">
+  <component name="RunManager" selected="Django server.teachers_site">
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="teachers" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -185,9 +198,9 @@
         <env name="DJANGO_SETTINGS_MODULE" value="teachers.settings" />
         <env name="PYDEVD_USE_FRAME_EVAL" value="NO" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Serg\Documents\GitHub\teachers_site\venv36\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
@@ -201,8 +214,33 @@
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="teachers_site" type="Python.DjangoServer" factoryName="Django server">
+      <module name="teachers_site" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="teachers.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Django server.teachers" />
+      <item itemvalue="Django server.teachers_site" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.utils" />
@@ -222,17 +260,12 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@4f991a22" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@6943f3e6" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@21689e59" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@3abed692" type="9fbbdea:ServiceModel$ServiceNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@4f991a22" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@4f0ea169" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
           </expand>
           <select />
@@ -304,7 +337,15 @@
       <workItem from="1603107124379" duration="10939000" />
       <workItem from="1603217968301" duration="3830000" />
       <workItem from="1603254593805" duration="2196000" />
-      <workItem from="1603428533623" duration="235000" />
+      <workItem from="1603428533623" duration="502000" />
+      <workItem from="1603524907690" duration="45000" />
+      <workItem from="1603541508402" duration="3007000" />
+      <workItem from="1603550338036" duration="984000" />
+      <workItem from="1603551623477" duration="1240000" />
+      <workItem from="1603630323761" duration="3177000" />
+      <workItem from="1604122513737" duration="8839000" />
+      <workItem from="1604134880557" duration="4878000" />
+      <workItem from="1604222164852" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -334,7 +375,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603256200397</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="billing system minimum fee">
+      <created>1603428921991</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1603428921992</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -358,7 +406,8 @@
     <MESSAGE value="timetable" />
     <MESSAGE value="billing celery task" />
     <MESSAGE value="unbanning user, billing system and index.html changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="unbanning user, billing system and index.html changes" />
+    <MESSAGE value="billing system minimum fee" />
+    <option name="LAST_COMMIT_MESSAGE" value="billing system minimum fee" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

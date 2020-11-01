@@ -31,7 +31,7 @@ def lesson_complete_confirmation(user_id, lesson_booking_id):
 
 	time_to_sleep = int(timedelta_.total_seconds()) + int(lesson_booking.lesson.minutes * 60)
 	print(time_to_sleep)
-	time.sleep(time_to_sleep)
+	time.sleep(time_to_sleep if time_to_sleep > 0 else 0.1)
 
 	text = get_language(lang="ru")
 	confirmation_text = text['booking_confirmation']

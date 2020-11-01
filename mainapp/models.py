@@ -1,7 +1,10 @@
 from datetime import datetime
+from io import BytesIO
 
+from PIL import Image
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import User
+from django.core.files import File
 from django.db import models
 
 # Create your models here.
@@ -28,6 +31,19 @@ class Profile(models.Model):
 	work_day_end = models.CharField(max_length=5, default='20:00', verbose_name="Work day end")
 
 	teacher_registration_date = models.DateTimeField(default=datetime.today())
+
+	def compressAvatar(self, image):
+		im = Image.open(image)
+		im_io = BytesIO()
+
+		im.save(im_io, 'JPEG', quality=60)
+		new_image = File(im_io, name=image.name)
+
+		return new_image
+
+	def save(self, *args, **kwargs):
+		self.avatar = self.compressAvatar(self.avatar)
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return self.user.first_name

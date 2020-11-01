@@ -1,3 +1,5 @@
+from PIL import Image
+
 from mainapp.strings import STRINGS
 
 
@@ -12,5 +14,4 @@ def get_language(request=None, lang=None):
 
 def get_current_language(request):
 	return request.session.get('language', 'ru')
-
 

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '$ze(e&urzjrvdb@ep6pz(gqkl#6l5r(cfv)nzzg!lzd5dq$k7('
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -41,8 +39,58 @@ INSTALLED_APPS = [
 	'apiapp',
 	'authapp',
 	'rest_framework',
-	'lesson_confirmation_app'
+	'lesson_confirmation_app',
+	'django_celery_beat'
 ]
+
+
+
+
+"""
+[Unit]
+Description=gunicorn daemon
+Requires=teachers.socket
+After=network.target
+
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/projects/teachers
+ExecStart=/home/projects/teachers/django2/bin/gunicorn \
+    --access-logfile - \
+    --workers 3 \
+    --bind unix:/home/projects/teachers/teachers.sock \
+    teachers.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+"""
+
+
+"""
+[Unit]
+Description=gunicorn daemon
+Requires=diplom.socket
+After=network.target
+
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/projects/prj/booking
+ExecStart=/home/projects/prj/booking/django2/bin/gunicorn \
+    --access-logfile - \
+    --workers 3 \
+    --bind unix:/home/projects/prj/booking/diplom.sock \
+    booking.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+"""
 
 AUTHENTICATION_BACKENDS = ['authapp.auth_backend.EmailBackend']
 
@@ -77,7 +125,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'teachers.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -87,7 +134,6 @@ DATABASES = {
 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 	}
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -107,20 +153,18 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -151,5 +195,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 HOST_NAME = 'http://127.0.0.1:8000/'
+
+CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+# CELERYBEAT_SCHEDULER = 'celery.beat.PersistentScheduler'
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'Europe/Moscow'
 
 COMMISSION = 0.1

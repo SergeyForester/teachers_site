@@ -359,6 +359,7 @@ def become_a_teacher(request, id):
 	if request.method == "POST":
 		profile = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
 		profile.is_teacher = True
+		profile.teacher_registration_date = datetime.datetime.now()
 		profile.save()
 
 		TeacherTimetable.objects.create(user=profile.user)

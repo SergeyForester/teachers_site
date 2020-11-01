@@ -1,7 +1,9 @@
 import datetime
 
-from celery import shared_task
+from celery import shared_task, task
+from celery.schedules import crontab
 from celery.signals import celeryd_init, celeryd_after_setup
+from celery.task import periodic_task
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -11,10 +13,14 @@ from mainapp.tasks import send_letter
 from mainapp.utils import get_language
 from teachers import settings
 
-@shared_task
+# @periodic_task(run_every=crontab(minute=1))
+@task
 def check_teachers_bills():
 	teachers_ = User.objects.filter(profile__is_teacher=True)
 	today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+
+	created_bills = 0
+	banned_teachers = 0
 
 	print("Checking teachers' bills")
 	print(f"{len(teachers_)} to check")
@@ -31,13 +37,14 @@ def check_teachers_bills():
 			# second case -> teacher has bills
 			# then count from last bill date
 			last_bill = bills.latest("-created_at")
-			count_from = last_bill.created_at
+			count_from = last_bill.created_at.replace(hour=0, minute=0, second=0, microsecond=0)
 
 		count_from = count_from.replace(tzinfo=None)
+		print(f'<{teacher.username}>: Count from: {count_from}')
 
 		if count_from:
 			# check if a teacher worked for a week
-			if count_from + datetime.timedelta(minutes=35) >= today:
+			if count_from + datetime.timedelta(days=0) == today:
 				total_amount = utils.cost_of_using(teacher.id)
 
 				if total_amount < 150:
@@ -49,6 +56,7 @@ def check_teachers_bills():
 					pay_by=today + datetime.timedelta(days=1),
 					total_amount=total_amount
 				)
+				print("Bill has been created")
 
 				# send email with bill
 				text = get_language(lang="ru")
@@ -74,6 +82,8 @@ def check_teachers_bills():
 					                  "text": text["keywords"]["pay"]
 				                  })
 
+				created_bills += 1
+
 		# banning part
 		if len(bills):
 			last_bill = bills.latest("created_at")
@@ -82,7 +92,11 @@ def check_teachers_bills():
 					and len(TeacherBill.objects.filter(teacher=teacher, is_payed=False)):
 				last_bill.teacher.is_active = False
 				last_bill.teacher.save()
+				banned_teachers += 1
 
-@celeryd_init.connect
-def check_bills_on_init(sender=None, conf=None, **kwargs):
-	check_teachers_bills.delay()
+	print(f"Created bills: {created_bills}")
+	print(f"Banned teachers: {banned_teachers}")
+
+# @celeryd_init.connect
+# def check_bills_on_init(sender=None, conf=None, **kwargs):
+# 	check_teachers_bills.delay()
