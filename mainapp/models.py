@@ -12,6 +12,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apiapp.models import TeacherTimetableBooking
+from mainapp.Exceptions import FileTooBigException
 
 
 class Profile(models.Model):
@@ -41,8 +42,13 @@ class Profile(models.Model):
 
 		return new_image
 
-	def save(self, *args, **kwargs):
-		self.avatar = self.compressAvatar(self.avatar)
+	def save(self, compress=True, *args, **kwargs):
+		if compress:
+			self.avatar = self.compressAvatar(self.avatar)
+			if self.video:
+				if self.video.size / 1024 / 1024 > 200:
+					raise FileTooBigException("File size is more than 200MB")
+
 		super().save(*args, **kwargs)
 
 	def __str__(self):

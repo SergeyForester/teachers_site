@@ -82,23 +82,18 @@
             return [false, null];
         }
 
-        APIRequest('/api/v1/users/{{ user_id }}/lessons/?teacher=true', function (upcoming_lessons) {
-            let completed_lessons_counter = 0;
-
-            for (let lesson of upcoming_lessons) {
-                if (lesson.is_completed) {
-                    completed_lessons_counter++;
-                }
-
-            }
-
-            $('#completed-lessons-counter').text(completed_lessons_counter);
-        });
-
         let days = [];
         let hours = [];
         let lessons = [];
         APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
+
+            if (user.hasOwnProperty("error")) {
+                $(".container").html(`<div class="container-radius background-white">
+                    <h4 style="text-align:center;">${user.error}</h3>
+                </div>`);
+                $('.preloader').css("display", "none");
+            }
+
             // creating timetable
             console.log(user);
             hours = [];
@@ -296,6 +291,22 @@
                 }
             );
         });
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/lessons/?teacher=true', function (upcoming_lessons) {
+            let completed_lessons_counter = 0;
+
+            for (let lesson of upcoming_lessons) {
+                if (lesson.is_completed) {
+                    completed_lessons_counter++;
+                }
+
+            }
+
+            $('#completed-lessons-counter').text(completed_lessons_counter);
+        });
+
+
 
         $('.pointer').click(function () {
             $('.bottom-modal').css('display', 'none');

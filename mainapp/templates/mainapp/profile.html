@@ -2,6 +2,20 @@
 {% block content %}
     <div class="preloader"></div>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class="alert alert-danger"
+                    {% else %}
+                        class="alert alert-info"
+                    {% endif %}
+                        role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="modal" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

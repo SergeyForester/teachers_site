@@ -5,7 +5,7 @@ app_name = "apiapp"
 
 urlpatterns = [
 	path('v1/users/', views.UsersView.as_view({'get': 'list'})),
-	path('v1/users/<int:id>/', views.UserView.as_view({'get': 'retrieve'})),
+	path('v1/users/<int:id>/', views.UserView.as_view()),
 	path('v1/users/<int:id>/courses/', views.UserCoursesView.as_view()),
 	path('v1/users/<int:id>/courses/<int:course_id>/', views.UserCourseView.as_view()),
 	path('v1/users/<int:id>/teachers/', views.UserTeachersView.as_view({'get': 'list'})),

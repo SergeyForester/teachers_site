@@ -1,5 +1,18 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class="alert alert-danger"
+                    {% else %}
+                        class="alert alert-info"
+                    {% endif %}
+                        role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
     <div class="container mt-5">
         <div class="container-radius background-white">

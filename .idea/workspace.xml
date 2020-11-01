@@ -2,26 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/teachers_site.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/teachers.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/teachers.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mainapp/Exceptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/teacher_sign_up.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/avatars/IMG_20190927_091836.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/videos/default_JxSW8PM.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,8 +59,8 @@
       <list>
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -257,17 +249,7 @@
     <option name="allServicesViewState">
       <serviceView>
         <treeState>
-          <expand>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@4f991a22" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@4f991a22" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@4f0ea169" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
-          </expand>
+          <expand />
           <select />
         </treeState>
       </serviceView>
@@ -345,7 +327,7 @@
       <workItem from="1603630323761" duration="3177000" />
       <workItem from="1604122513737" duration="8839000" />
       <workItem from="1604134880557" duration="4878000" />
-      <workItem from="1604222164852" duration="775000" />
+      <workItem from="1604222164852" duration="4535000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -382,7 +364,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603428921992</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="compressing avatar and celery fixes">
+      <created>1604222968688</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1604222968688</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -407,7 +396,8 @@
     <MESSAGE value="billing celery task" />
     <MESSAGE value="unbanning user, billing system and index.html changes" />
     <MESSAGE value="billing system minimum fee" />
-    <option name="LAST_COMMIT_MESSAGE" value="billing system minimum fee" />
+    <MESSAGE value="compressing avatar and celery fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="compressing avatar and celery fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

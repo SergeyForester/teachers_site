@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from apiapp import utils
 from apiapp.serializers import UserSerializer, LessonSerializer, LessonBookingSerializer, \
 	TeacherTimetableBookingSerializer
+from mainapp.Exceptions import FileTooBigException
 from mainapp.forms import ProfileForm, LessonForm, TeacherForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
@@ -68,12 +69,16 @@ class UsersView(viewsets.ModelViewSet):
 			return User.objects.all()
 
 
-class UserView(viewsets.ModelViewSet):
+class UserView(APIView):
 	serializer_class = UserSerializer
 
-	def get_object(self):
-		return get_object_or_404(User, pk=self.kwargs['id'])
+	def get(self, request, id):
+		user = get_object_or_404(User, pk=self.kwargs['id'])
 
+		if not user.is_active:
+			return Response({"code": 403, "error": "User has been banned."})
+
+		return Response(UserSerializer(user).data)
 
 class UserCoursesView(APIView):
 	serializer_class = LessonSerializer
@@ -238,22 +243,30 @@ def profile(request, id):
 	obj = None
 
 	if request.method == 'POST':
-		form = ProfileForm(request.POST, request.FILES, instance=Profile.objects.get(id=id))
-		obj = form.save()
+		try:
+			form = ProfileForm(request.POST, request.FILES, instance=Profile.objects.get(user__id=id))
+			obj = form.save()
 
-		if 'type' in request.GET:
+			if 'type' in request.GET:
+				if request.GET['type'] == 'redirect':
+					return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+			res = model_to_dict(obj)
+			res['video'] = obj.video.url
+			res['avatar'] = obj.avatar.url
+			return JsonResponse(res, safe=False)
+
+		except FileTooBigException as err:
 			if request.GET['type'] == 'redirect':
+				messages.error(request, err)
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-	res = model_to_dict(obj)
-	res['video'] = obj.video.url
-	res['avatar'] = obj.avatar.url
-	return JsonResponse(res, safe=False)
+			return JsonResponse({"code": 500, "error": err})
 
 
 def create_booking(request):
 	lesson_booking = None
-	# TODO: WARNING this function is a representation of a bad code.
+	# TODO: WARNING this function is an example of a bad code :)
 
 	if request.method == 'POST':
 		day = datetime.datetime.strptime(request.POST['day'][4: 15], '%b %d %Y')
@@ -357,17 +370,25 @@ def cost_of_using(request):
 
 def become_a_teacher(request, id):
 	if request.method == "POST":
-		profile = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
-		profile.is_teacher = True
-		profile.teacher_registration_date = datetime.datetime.now()
-		profile.save()
+		try:
+			profile = TeacherForm(request.POST, instance=Profile.objects.get(user__id=id)).save()
+			profile.is_teacher = True
+			profile.teacher_registration_date = datetime.datetime.now()
+			profile.save()
 
-		TeacherTimetable.objects.create(user=profile.user)
+			TeacherTimetable.objects.create(user=profile.user)
 
-		if 'type' in request.GET:
+			if 'type' in request.GET:
+				if request.GET['type'] == 'redirect':
+					return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+			return JsonResponse(model_to_dict(profile), safe=False)
+
+		except FileTooBigException as err:
 			if request.GET['type'] == 'redirect':
+				messages.error(request, err)
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-		return JsonResponse(model_to_dict(profile), safe=False)
+			return JsonResponse({"code": 500, "error": err})
 	else:
 		return JsonResponse({"code": 500, "error": "Invalid request"})

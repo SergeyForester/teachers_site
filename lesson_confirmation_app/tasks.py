@@ -1,9 +1,6 @@
 import datetime
 
-from celery import shared_task, task
-from celery.schedules import crontab
-from celery.signals import celeryd_init, celeryd_after_setup
-from celery.task import periodic_task
+from celery import task
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -12,6 +9,7 @@ from lesson_confirmation_app.models import TeacherBill
 from mainapp.tasks import send_letter
 from mainapp.utils import get_language
 from teachers import settings
+
 
 # @periodic_task(run_every=crontab(minute=1))
 @task
@@ -44,7 +42,7 @@ def check_teachers_bills():
 
 		if count_from:
 			# check if a teacher worked for a week
-			if count_from + datetime.timedelta(days=0) == today:
+			if count_from + datetime.timedelta(days=1) == today:
 				total_amount = utils.cost_of_using(teacher.id)
 
 				if total_amount < 150:
@@ -91,7 +89,7 @@ def check_teachers_bills():
 			if last_bill.pay_by.replace(tzinfo=None) < today \
 					and len(TeacherBill.objects.filter(teacher=teacher, is_payed=False)):
 				last_bill.teacher.is_active = False
-				last_bill.teacher.save()
+				last_bill.teacher.save(compress=False)
 				banned_teachers += 1
 
 	print(f"Created bills: {created_bills}")
