@@ -24,6 +24,8 @@ SECRET_KEY = '$ze(e&urzjrvdb@ep6pz(gqkl#6l5r(cfv)nzzg!lzd5dq$k7('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+PRODUCTION = True
+
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -179,11 +181,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sergioburik@gmail.com'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'sergioburik@gmail.com'
+# EMAIL_HOST_PASSWORD = 'server2652'
+
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "shop@vagonka40.ru"
 EMAIL_HOST_PASSWORD = 'server2652'
+
+
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -202,3 +213,7 @@ CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'Europe/Moscow'
 
 COMMISSION = 0.1
+
+if PRODUCTION:
+	CELERY_BROKER_URL = 'redis://localhost:6379'
+	HOST_NAME = 'http://teachhub.leiden.ru/'

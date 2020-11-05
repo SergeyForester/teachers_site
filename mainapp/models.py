@@ -42,12 +42,15 @@ class Profile(models.Model):
 
 		return new_image
 
-	def save(self, compress=True, *args, **kwargs):
-		if compress:
-			self.avatar = self.compressAvatar(self.avatar)
+	def save(self,  *args, **kwargs):
+		try:
+			if self.avatar:
+				self.avatar = self.compressAvatar(self.avatar)
 			if self.video:
 				if self.video.size / 1024 / 1024 > 200:
 					raise FileTooBigException("File size is more than 200MB")
+		except FileNotFoundError as err:
+			print(err)
 
 		super().save(*args, **kwargs)
 

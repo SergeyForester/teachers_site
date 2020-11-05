@@ -9,3 +9,20 @@ celery==4.2
 yandex_checkout
 gevent
 pillow
+
+[program:teachers-celery]
+command=/home/projects/teachers/django2/lib/python3.6/site-packages/celery --app=teachers.celery:app worker --loglevel=INFO
+directory=/home/projects/teachers
+user=root
+numprocs=1
+stdout_logfile=/home/projects/teachers/logs/celery-worker.log
+stderr_logfile=/home/projects/teachers/logs/celery-worker.log
+autostart=true
+autorestart=true
+startsecs=10
+
+stopwaitsecs = 600
+
+killasgroup=true
+
+priority=998

@@ -18,7 +18,8 @@ from mainapp.Exceptions import FileTooBigException
 from mainapp.forms import ProfileForm, LessonForm, TeacherForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
-from mainapp.tasks import lesson_complete_confirmation, send_letter
+from mainapp.tasks import send_letter
+from lesson_confirmation_app.tasks import lesson_complete_confirmation
 from mainapp.utils import get_language
 from teachers import settings
 
@@ -296,6 +297,7 @@ def create_booking(request):
 				if 'type' in request.GET:
 					if request.GET['type'] == 'redirect':
 						messages.error(request, 'No enough places in lesson')
+						return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 				return JsonResponse({'code': 500, 'error': 'No enough places in lesson'})
 

@@ -1,17 +1,18 @@
 import datetime
+import time
 
-from celery import task
+from celery import task, shared_task
 from django.contrib.auth.models import User
 from django.urls import reverse
 
 from apiapp import utils
 from lesson_confirmation_app.models import TeacherBill
+from mainapp.models import LessonBooking
 from mainapp.tasks import send_letter
 from mainapp.utils import get_language
 from teachers import settings
 
 
-# @periodic_task(run_every=crontab(minute=1))
 @task
 def check_teachers_bills():
 	teachers_ = User.objects.filter(profile__is_teacher=True)
@@ -73,11 +74,11 @@ def check_teachers_bills():
 					                  'message_text': "",
 					                  "link": {
 						                  'href': settings.HOST_NAME + str(reverse("lessons:pay_for_using",
-						                                                        kwargs={
-							                                                        "id": bill.id
-						                                                        }))[1:]
+						                                                           kwargs={
+							                                                           "id": bill.id
+						                                                           }))[1:],
+						                  "text": text["keywords"]["pay"]
 					                  },
-					                  "text": text["keywords"]["pay"]
 				                  })
 
 				created_bills += 1
@@ -89,12 +90,43 @@ def check_teachers_bills():
 			if last_bill.pay_by.replace(tzinfo=None) < today \
 					and len(TeacherBill.objects.filter(teacher=teacher, is_payed=False)):
 				last_bill.teacher.is_active = False
-				last_bill.teacher.save(compress=False)
+				last_bill.teacher.save()
 				banned_teachers += 1
 
 	print(f"Created bills: {created_bills}")
 	print(f"Banned teachers: {banned_teachers}")
 
-# @celeryd_init.connect
-# def check_bills_on_init(sender=None, conf=None, **kwargs):
-# 	check_teachers_bills.delay()
+
+@task
+def lesson_complete_confirmation():
+	# list of all bookings to check
+	now = datetime.datetime.now().replace(second=0, microsecond=0, tzinfo=None)
+	print(f"Now: {now}")
+
+	for booking in LessonBooking.objects.all():
+		if booking.datetime.replace(tzinfo=None) + datetime.timedelta(minutes=booking.lesson.minutes) == now:
+			print(f'Booking-<{booking.id}>')
+
+			text = get_language(lang="ru")
+			confirmation_text = text['booking_confirmation']
+
+			user = User.objects.get(id=booking.user.id)
+
+			# sending email to student
+			send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
+			                  [user.email],
+			                  {
+				                  'letter_title': confirmation_text['confirmation_of_the_end'],
+				                  'client_name': user.first_name,
+				                  'message_title': confirmation_text['confirmation_of_the_end'],
+				                  'items': [
+					                  f'{text["keywords"]["card_number"]}: {booking.lesson.lesson_type.user.profile.card_number}',
+				                  ],
+				                  'message_text': f"{text['keywords']['thank_you_for_the_lesson']}\n{confirmation_text['please_pay_the_teacher']}",
+				                  "link": {
+					                  'href': settings.HOST_NAME + str(reverse("lessons:confirmation",
+					                                                           kwargs={"id": booking.id}))[1:],
+					                  "text": text["keywords"]["confirm"]
+				                  },
+
+			                  })
