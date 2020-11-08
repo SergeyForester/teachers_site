@@ -5,7 +5,7 @@
         <form method="post" action="{% url 'auth:sign_up' %}">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">{{ text.keywords.submit }}</button>
         </form>
     </div>
 {% endblock %}

@@ -40,6 +40,9 @@ def check_teachers_bills():
 
 		count_from = count_from.replace(tzinfo=None)
 		print(f'<{teacher.username}>: Count from: {count_from}')
+		print(f'Timedelta: {count_from + datetime.timedelta(days=1)}')
+		print(f"Today: {today}")
+		print(f'Timedelta == now: {count_from + datetime.timedelta(days=1) == today}')
 
 		if count_from:
 			# check if a teacher worked for a week
@@ -104,8 +107,10 @@ def lesson_complete_confirmation():
 	print(f"Now: {now}")
 
 	for booking in LessonBooking.objects.all():
+		print(f'Booking-<{booking.id}>')
+		print(f"booking.datetime: {booking.datetime.replace(tzinfo=None)}")
+		print(f"{booking.datetime.replace(tzinfo=None) + datetime.timedelta(minutes=booking.lesson.minutes)} == {now}")
 		if booking.datetime.replace(tzinfo=None) + datetime.timedelta(minutes=booking.lesson.minutes) == now:
-			print(f'Booking-<{booking.id}>')
 
 			text = get_language(lang="ru")
 			confirmation_text = text['booking_confirmation']

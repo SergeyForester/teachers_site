@@ -22,7 +22,7 @@ class Profile(models.Model):
 	rating = models.DecimalField(decimal_places=1, max_digits=3, max_length=30, default=0.0, null=True, blank=True)
 	birth_date = models.DateField(null=True, blank=True)
 	is_teacher = models.BooleanField(default=False)
-	avatar = models.FileField(upload_to='avatars', default='avatars/default.png')
+	avatar = models.FileField(upload_to='avatars', default='avatars/default.png', max_length=999)
 	video = models.FileField(upload_to='videos', null=True, blank=True)
 	starting_price = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
 	date = models.DecimalField(decimal_places=2, max_digits=8, default=0.0, null=True, blank=True)
@@ -49,7 +49,7 @@ class Profile(models.Model):
 			if self.video:
 				if self.video.size / 1024 / 1024 > 200:
 					raise FileTooBigException("File size is more than 200MB")
-		except FileNotFoundError as err:
+		except Exception as err:
 			print(err)
 
 		super().save(*args, **kwargs)

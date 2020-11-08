@@ -26,7 +26,7 @@ def login(request):
 	if request.method == 'POST':
 		print(request.POST)
 		user = auth.authenticate(username=request.POST['email'], password=request.POST['password'])
-		if user is not None and user.is_active:
+		if user is not None:
 			auth.login(request, user)
 			if 'api' in request.GET and request.GET['api'] == 'true':
 				data = model_to_dict(user)

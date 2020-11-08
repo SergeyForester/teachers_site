@@ -19,7 +19,6 @@ from mainapp.forms import ProfileForm, LessonForm, TeacherForm
 from mainapp.models import LessonType, Lesson, CourseType, LessonBooking, TeacherTimetableBooking, Profile, \
 	TeacherTimetable
 from mainapp.tasks import send_letter
-from lesson_confirmation_app.tasks import lesson_complete_confirmation
 from mainapp.utils import get_language
 from teachers import settings
 
@@ -30,8 +29,10 @@ class UsersView(viewsets.ModelViewSet):
 	def get_queryset(self):
 		print(f'Query_params: {self.request.query_params}')
 
+		result = None
+
 		if self.request.query_params.get("is_teacher") == "true":
-			print("Looking for a teacher...")
+			print("Looking for a teachers...")
 
 			# looking for a teacher
 			users = User.objects.filter(profile__is_teacher=True)
@@ -58,16 +59,24 @@ class UsersView(viewsets.ModelViewSet):
 
 			print(f'users: {users}')
 
-			return users
+			result = users
 
 		elif self.request.query_params.get("is_teacher") == "false":
 			# looking only for students
-			return User.objects.filter(profile__is_teacher=False)
+			result = User.objects.filter(profile__is_teacher=False)
 
 		else:
 			print("All users")
 			# looking for all users
-			return User.objects.all()
+			result = User.objects.all()
+
+		if self.request.query_params.get("is_active") == "true":
+			if isinstance(result, list):
+				result = [user for user in result if user.is_active]
+			else:
+				result = result.filter(is_active=True)
+
+		return result
 
 
 class UserView(APIView):
@@ -80,6 +89,7 @@ class UserView(APIView):
 			return Response({"code": 403, "error": "User has been banned."})
 
 		return Response(UserSerializer(user).data)
+
 
 class UserCoursesView(APIView):
 	serializer_class = LessonSerializer
@@ -94,11 +104,18 @@ class UserCoursesView(APIView):
 
 			res = []
 			for lesson in lessons:
-				lesson.name = translator.translate(lesson.name,
-				                                   dest=self.request.GET['lang']).text.capitalize()
-				lesson.lesson_type.course_type.name = translator.translate(lesson.lesson_type.course_type.name,
-				                                                           dest=self.request.GET[
-					                                                           'lang']).text.capitalize()
+
+				translated = False
+				while translated:
+					try:
+						lesson.name = translator.translate(lesson.name,
+						                                   dest=self.request.GET['lang']).text.capitalize()
+						lesson.lesson_type.course_type.name = translator.translate(lesson.lesson_type.course_type.name,
+						                                                           dest=self.request.GET[
+							                                                           'lang']).text.capitalize()
+						translated = True
+					except:
+						pass
 				res.append(lesson)
 
 			return Response(LessonSerializer(res, many=True).data)
@@ -133,8 +150,8 @@ class UserCoursesView(APIView):
 			lesson = serializer.save()
 
 			# set user's starting_price
-			if lesson.price < lesson.lesson_type.user.profile.starting_price:
-				lesson.lesson_type.user.profile.starting_price = lesson_type.price
+			if lesson.price < lesson.lesson_type.user.profile.starting_price or lesson.lesson_type.user.profile.starting_price == 0:
+				lesson.lesson_type.user.profile.starting_price = lesson.price
 				lesson.lesson_type.user.profile.save()
 
 			if 'redirect' in request.GET and request.GET['redirect'] == 'true':
@@ -196,8 +213,15 @@ def courses_view(request):
 		for course in courses:
 			obj = {"value": course.name}  # genius entity
 
-			course.name = translator.translate(course.name,
-			                                   dest=request.GET['lang']).text.capitalize()
+			translated = False
+
+			while not translated:
+				try:
+					course.name = translator.translate(course.name,
+					                                   dest=request.GET['lang']).text.capitalize()
+					translated = True
+				except:
+					pass
 
 			obj['item'] = course.name  # translated entity
 			data.append(obj)
@@ -283,9 +307,9 @@ def create_booking(request):
 			if timetable.lesson.is_group and len(bookings_list) + 1 <= timetable.lesson.places:
 				# creating one more booking for group lesson
 				lesson_booking = LessonBooking.objects.create(datetime=day,
-				                                   lesson=lesson,
-				                                   user=User.objects.get(id=request.POST['user_id']),
-				                                   timetable_booking=timetable.timetable_booking)
+				                                              lesson=lesson,
+				                                              user=User.objects.get(id=request.POST['user_id']),
+				                                              timetable_booking=timetable.timetable_booking)
 				if len(bookings_list) + 1 == timetable.lesson.places:
 					lesson_booking.timetable_booking.status = TeacherTimetableBooking.BOOKED
 					lesson_booking.timetable_booking.save()
@@ -323,36 +347,33 @@ def create_booking(request):
 
 		# send confirmation letters to user and teacher
 		send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER, [lesson_booking.user.email],
-		            {
-			            'letter_title': data['booking_confirmation'],
-			            'client_name': lesson_booking.user.first_name,
-			            'message_title': data['you_have_booked_a_lesson'],
-			            'items': [
-				            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
-				            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
-				            f'{keywords["teacher"]}: {lesson_booking.lesson.lesson_type.user.first_name}',
-				            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
-			            ],
-			            'message_text': data['payment_details']
-		            })
+		                  {
+			                  'letter_title': data['booking_confirmation'],
+			                  'client_name': lesson_booking.user.first_name,
+			                  'message_title': data['you_have_booked_a_lesson'],
+			                  'items': [
+				                  f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+				                  f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+				                  f'{keywords["teacher"]}: {lesson_booking.lesson.lesson_type.user.first_name}',
+				                  f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+			                  ],
+			                  'message_text': data['payment_details']
+		                  })
 
 		send_letter.delay('mainapp/letters/simple_letter.html', settings.EMAIL_HOST_USER,
-		            [lesson_booking.lesson.lesson_type.user.email],
-		            {
-			            'letter_title': data['new_booking'],
-			            'client_name': lesson_booking.user.first_name,
-			            'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
-			            'items': [
-				            f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
-				            f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
-				            f'{keywords["user"]}: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
-				            f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
-			            ],
-			            'message_text': ''
-		            })
-
-		# scheduling lesson completion mail
-		lesson_complete_confirmation.delay(lesson_booking.user.id, lesson_booking.id)
+		                  [lesson_booking.lesson.lesson_type.user.email],
+		                  {
+			                  'letter_title': data['new_booking'],
+			                  'client_name': lesson_booking.user.first_name,
+			                  'message_title': f'{lesson_booking.user.first_name} {lesson_booking.user.last_name} {data["user_have_booked_a_lesson"]}',
+			                  'items': [
+				                  f'{keywords["lesson"]}: {lesson_booking.lesson.name}',
+				                  f'{keywords["time"]}: {str(lesson_booking.datetime)[:-3]}',
+				                  f'{keywords["user"]}: {lesson_booking.user.first_name} {lesson_booking.user.last_name}',
+				                  f'{keywords["price"]}: {lesson_booking.lesson.price} ₽',
+			                  ],
+			                  'message_text': ''
+		                  })
 
 		if 'type' in request.GET:
 			if request.GET['type'] == 'redirect':

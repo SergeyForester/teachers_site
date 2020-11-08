@@ -4,13 +4,14 @@
     <list default="true" id="d53fef1e-02d1-462b-8577-e0fddb34a0f2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apiapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apiapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/templates/authapp/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/templates/authapp/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/templates/authapp/sign_up.html" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/templates/authapp/sign_up.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/lesson_confirmation_app/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/user_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/templates/mainapp/teachers_search.html" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/templates/mainapp/teachers_search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainapp/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainapp/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teachers/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/celery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teachers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/teachers/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -87,15 +88,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\img" />
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\fonts\helvetica_neue" />
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\fonts\graphik_web" />
       <recent name="C:\Users\Serg\Documents\GitHub\teachers_site\static\js" />
       <recent name="C:\Users\Serg\PycharmProjects\teachers\authapp" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Serg\PycharmProjects\teachers\media\videos" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -210,8 +211,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="teachers.settings" />
+        <env name="PYDEVD_USE_FRAME_EVAL" value="NO" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\Serg\Documents\GitHub\teachers_site\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -246,7 +248,22 @@
     <option name="allServicesViewState">
       <serviceView>
         <treeState>
-          <expand />
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@3cf4820d" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@3cf4820d" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@7f9cd068" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@3cf4820d" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@280cc861" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
           <select />
         </treeState>
       </serviceView>
@@ -327,7 +344,10 @@
       <workItem from="1604222164852" duration="10000000" />
       <workItem from="1604294625668" duration="23000" />
       <workItem from="1604295029190" duration="37000" />
-      <workItem from="1604576294882" duration="5541000" />
+      <workItem from="1604576294882" duration="6947000" />
+      <workItem from="1604646041262" duration="5611000" />
+      <workItem from="1604748109970" duration="3462000" />
+      <workItem from="1604833176655" duration="3704000" />
     </task>
     <task id="LOCAL-00001" summary="timetable">
       <created>1596972911940</created>
@@ -378,7 +398,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604226945477</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="celery bug fixes">
+      <created>1604603457898</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1604603457898</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +432,8 @@
     <MESSAGE value="billing system minimum fee" />
     <MESSAGE value="compressing avatar and celery fixes" />
     <MESSAGE value="bug fixes and banning teacher's page" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fixes and banning teacher's page" />
+    <MESSAGE value="celery bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="celery bug fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

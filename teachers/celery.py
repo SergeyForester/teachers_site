@@ -25,8 +25,12 @@ app.config_from_object('django.conf:settings')
 app.conf.beat_schedule = {
 	'check-teachers-bills': {
 		'task': 'lesson_confirmation_app.tasks.check_teachers_bills',
-		'schedule': crontab(hour="13", minute="05"),
+		'schedule': crontab(hour="7", minute="40"),
 	},
+	'lesson-confirmation': {
+		'task': 'lesson_confirmation_app.tasks.lesson_complete_confirmation',
+		'schedule': crontab(minute='*/30'),
+	}
 }
 
 app.conf.timezone = 'UTC'
