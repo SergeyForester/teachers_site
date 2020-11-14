@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include("mainapp.urls", namespace="main")),
     path('auth/', include("authapp.urls", namespace="auth")),
     path('lessons/', include("lesson_confirmation_app.urls", namespace="lessons")),
+    path('store/', include("storeapp.urls", namespace="store")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

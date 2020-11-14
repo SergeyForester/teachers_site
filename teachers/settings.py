@@ -24,7 +24,7 @@ SECRET_KEY = '$ze(e&urzjrvdb@ep6pz(gqkl#6l5r(cfv)nzzg!lzd5dq$k7('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-PRODUCTION = True
+PRODUCTION = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -42,57 +42,11 @@ INSTALLED_APPS = [
 	'authapp',
 	'rest_framework',
 	'lesson_confirmation_app',
-	'django_celery_beat'
+	'django_celery_beat',
+	"storeapp"
 ]
 
 
-
-
-"""
-[Unit]
-Description=gunicorn daemon
-Requires=teachers.socket
-After=network.target
-
-
-[Service]
-User=root
-Group=www-data
-WorkingDirectory=/home/projects/teachers
-ExecStart=/home/projects/teachers/django2/bin/gunicorn \
-    --access-logfile - \
-    --workers 3 \
-    --bind unix:/home/projects/teachers/teachers.sock \
-    teachers.wsgi:application
-
-[Install]
-WantedBy=multi-user.target
-
-"""
-
-
-"""
-[Unit]
-Description=gunicorn daemon
-Requires=diplom.socket
-After=network.target
-
-
-[Service]
-User=root
-Group=www-data
-WorkingDirectory=/home/projects/prj/booking
-ExecStart=/home/projects/prj/booking/django2/bin/gunicorn \
-    --access-logfile - \
-    --workers 3 \
-    --bind unix:/home/projects/prj/booking/diplom.sock \
-    booking.wsgi:application
-
-[Install]
-WantedBy=multi-user.target
-
-
-"""
 
 AUTHENTICATION_BACKENDS = ['authapp.auth_backend.EmailBackend']
 
@@ -206,6 +160,8 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 HOST_NAME = 'http://127.0.0.1:8000/'
+
+STORE_HOST = 'http://127.0.0.1:8080/'
 
 CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 # CELERYBEAT_SCHEDULER = 'celery.beat.PersistentScheduler'

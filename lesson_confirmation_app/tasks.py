@@ -1,6 +1,7 @@
 import datetime
 import time
 
+import pytz
 from celery import task, shared_task
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -15,6 +16,8 @@ from teachers import settings
 
 @task
 def check_teachers_bills():
+	tzdata = pytz.timezone(settings.TIME_ZONE)
+
 	teachers_ = User.objects.filter(profile__is_teacher=True)
 	today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -38,7 +41,6 @@ def check_teachers_bills():
 			last_bill = bills.latest("-created_at")
 			count_from = last_bill.created_at.replace(hour=0, minute=0, second=0, microsecond=0)
 
-		count_from = count_from.replace(tzinfo=None)
 		print(f'<{teacher.username}>: Count from: {count_from}')
 		print(f'Timedelta: {count_from + datetime.timedelta(days=1)}')
 		print(f"Today: {today}")
@@ -90,7 +92,7 @@ def check_teachers_bills():
 		if len(bills):
 			last_bill = bills.latest("created_at")
 			# if teacher didn't pay by a stated time -> ban him
-			if last_bill.pay_by.replace(tzinfo=None) < today \
+			if last_bill.pay_by< today \
 					and len(TeacherBill.objects.filter(teacher=teacher, is_payed=False)):
 				last_bill.teacher.is_active = False
 				last_bill.teacher.save()
@@ -103,14 +105,18 @@ def check_teachers_bills():
 @task
 def lesson_complete_confirmation():
 	# list of all bookings to check
-	now = datetime.datetime.now().replace(second=0, microsecond=0, tzinfo=None)
+	tzdata = pytz.timezone(settings.TIME_ZONE)
+
+	print(f"tzdata: {tzdata}")
+
+	now = tzdata.localize(datetime.datetime.now().replace(second=0, microsecond=0).replace(tzinfo=None), is_dst=None)
 	print(f"Now: {now}")
 
 	for booking in LessonBooking.objects.all():
 		print(f'Booking-<{booking.id}>')
-		print(f"booking.datetime: {booking.datetime.replace(tzinfo=None)}")
-		print(f"{booking.datetime.replace(tzinfo=None) + datetime.timedelta(minutes=booking.lesson.minutes)} == {now}")
-		if booking.datetime.replace(tzinfo=None) + datetime.timedelta(minutes=booking.lesson.minutes) == now:
+		print(f"booking.datetime: {booking.datetime}")
+		print(f"{booking.datetime + datetime.timedelta(minutes=booking.lesson.minutes)} == {now}")
+		if booking.datetime + datetime.timedelta(minutes=booking.lesson.minutes) == now:
 
 			text = get_language(lang="ru")
 			confirmation_text = text['booking_confirmation']

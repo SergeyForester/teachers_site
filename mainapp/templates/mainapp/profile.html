@@ -66,15 +66,18 @@
                     teachers_html += '<div><h5>{{ text.profile.your_teachers }}</h5></div>';
                     for (let teacher of teachers) {
                         teachers_html += `
-                        <div class="list-item flex-block">
-                            <div class="user-avatar flex-left mr-2" style="width: 70px; height: 70px">
-                                <img src="${teacher.profile.avatar}" alt="">
-                            </div>
-                            <div class="flex-right">
-                                <h6 style="width: 100%">${teacher.first_name} ${teacher.last_name}</h6>
-                                <h7 style="width: 100%">${teacher.profile.location}</h7>
-                            </div>
-                        </div>
+                            <a href="/user/${teacher.id}/">
+                                <div class="list-item flex-block">
+                                    <div class="user-avatar flex-left mr-2" style="width: 70px; height: 70px">
+                                        <img src="${teacher.profile.avatar}" alt="">
+                                    </div>
+                                    <div class="flex-right">
+                                        <h6 style="width: 100%">${teacher.first_name} ${teacher.last_name}</h6>
+                                        <h7 style="width: 100%">${teacher.profile.location}</h7>
+                                    </div>
+                                </div>
+                            </a>
+
                     `
                     }
                 } else {
@@ -88,11 +91,14 @@
                     let upcoming_lessons_counter = 0;
 
                     if (lessons.length) {
-                        console.log(lessons);
+                        let now = new Date();
 
                         for (let lesson of lessons) {
+                            console.log(`Lesson ${lesson.id}.datetime: ${lesson.datetime}`);
                             if (lesson.is_completed) {
                                 completed_lessons_counter++;
+                            } else if (now > new Date(lesson.datetime)) {
+                                console.log("uncompleted lesson was hidden");
                             } else {
                                 upcoming_lessons_counter++;
                                 upcoming_lessons_html += `
@@ -111,12 +117,11 @@
 
                     {#if (data.profile.location !== '' || data.profile.birth_date !== '') {#}
                     {#    $('#myModal').modal('show');#}
-                    {#}#}
 
-                        {#$('footer').css('position', "relative");#}
+                    {#$('footer').css('position', "relative");#}
 
-                        $('.content').append(
-                            `<div class="container mt-5">
+                    $('.content').append(
+                        `<div class="container mt-5">
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-12">
                                 <div class="user-block background-white container-radius">
@@ -134,12 +139,6 @@
                                         <a href="{% url 'main:profile_teacher' %}" class="open-profile">
                                             <h6>
                                                 {{ text.profile.teaching }}
-                                            </h6>
-                                        </a>
-                                    {% else %}
-                                        <a href="{% url 'main:become_a_teacher' %}" class="open-profile">
-                                            <h6>
-                                                {{ text.profile.become_a_teacher }}
                                             </h6>
                                         </a>
                                     {% endif %}
@@ -179,9 +178,8 @@
                         </div>
                     </div>
                     `
-                        );
-                    }
-                );
+                    );
+                })
             });
         });
         $('body').on('click', '.open-profile', function () {

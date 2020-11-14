@@ -1,6 +1,7 @@
 import random
 
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -10,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from authapp.forms import UserForm
 from mainapp.models import Profile
 from mainapp.utils import *
-
 
 # Create your views here.
 
@@ -31,11 +31,11 @@ def login(request):
 			if 'api' in request.GET and request.GET['api'] == 'true':
 				data = model_to_dict(user)
 
-				p = Profile.objects.get(id=user.id)
+				p = Profile.objects.get(user__id=user.id)
 				profile = model_to_dict(p)
-				profile['avatar'] = settings.HOST_NAME + p.avatar.url
+				profile['avatar'] = settings.HOST_NAME[:-1] + p.avatar.url
 				if p.video:
-					profile['video'] = settings.HOST_NAME + p.video.url
+					profile['video'] = settings.HOST_NAME[:-1] + p.video.url
 				else:
 					profile['video'] = ''
 
@@ -61,7 +61,12 @@ def sign_up(request):
 		form = UserForm(request.POST)
 		user = form.save(commit=False)
 
-		user.username = user.first_name + str(random.randint(1, 999999))
+		while 1:
+			username = user.first_name + user.last_name + str(random.randint(1, 999999))
+			if not len(User.objects.filter(username=username)):
+				user.username = username
+				break
+
 		user.save()
 
 		# save and login

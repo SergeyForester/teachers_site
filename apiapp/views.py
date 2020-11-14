@@ -104,7 +104,6 @@ class UserCoursesView(APIView):
 
 			res = []
 			for lesson in lessons:
-
 				translated = False
 				while translated:
 					try:
@@ -116,6 +115,7 @@ class UserCoursesView(APIView):
 						translated = True
 					except:
 						pass
+
 				res.append(lesson)
 
 			return Response(LessonSerializer(res, many=True).data)
