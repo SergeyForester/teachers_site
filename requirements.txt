@@ -1,0 +1,11 @@
+googletrans
+django-rest-framework
+django
+django-celery
+pause
+redis==3.2.0
+django-redis
+celery==4.2
+yandex_checkout
+gevent
+pillow

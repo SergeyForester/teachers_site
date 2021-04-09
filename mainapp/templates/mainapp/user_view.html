@@ -1,0 +1,315 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+
+    <div class="preloader"></div>
+
+    <div class="container mt-3  mb-5">
+        <div class="row">
+            <div class="main-content container-radius background-white mr-3 col-12 col-md-12 col-lg-7">
+                {#user's main content#}
+
+            </div>
+            <div style="height: fit-content"
+                 class="side-content container-radius background-white col-12 col-md-12 col-lg-4">
+                {#side bar user's content#}
+                <h5>{{ text.keywords.timetable }}</h5>
+                <div class="timetable">
+                    <div class="timetable-column timetable-hours">
+                        <div class="grid-item"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-modal background-white container-radius" style="display: none">
+            <form action="/api/v1/bookings/create/?type=redirect" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="lesson_id" id="lesson_id" value="">
+                <input type="hidden" name="user_id" value="{{ request.user.id }}">
+                <div style="text-align: right" class="pointer">
+                    <i class="fa fa-times"></i>
+                </div>
+                <h6>{{ text.keywords.booking }}</h6>
+                <h4 id="bottom-modal-name"></h4>
+                <div class="row">
+                    <div class="timetable col-12 col-md-6 col-lg-5">
+                        <div class="timetable-column timetable-hours">
+                            <div class="grid-item"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-7 mt-2">
+                        <h6 id="bottom-modal-price">Price: </h6>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <h5 id="bottom-modal-price">{{ text.keywords.lesson_time }}: </h5>
+                                <select name="time" id="lesson_time"></select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mt-2">
+                                <h5 id="bottom-modal-price">{{ text.keywords.lesson_day }}: </h5>
+                                <select name="day" id="lesson_day"></select>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mt-2">
+                                <h5>{{ text.keywords.duration }}:
+                                    <span id="bottom-modal-duration"></span>
+                                </h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-4" type="submit">Book</button>
+            </form>
+
+        </div>
+    </div>
+    <script>
+        function getBooking(day, hour, bookings) {
+            for (let booking of bookings) {
+                let bookingDate = new Date(booking.lesson_booking.datetime);
+
+                let bookingDateDay = new Date(bookingDate);
+                bookingDateDay.setHours(0, 0, 0, 0);
+                day.setHours(0, 0, 0, 0);
+
+
+                if (bookingDateDay.getTime() === day.getTime()) {
+                    if (bookingDate.getTime() === hour.getTime()) {
+                        return [true, booking];
+                    }
+                }
+            }
+
+            return [false, null];
+        }
+
+        let days = [];
+        let hours = [];
+        let lessons = [];
+        APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
+
+            if (user.hasOwnProperty("error")) {
+                $(".container").html(`<div class="container-radius background-white">
+                    <h4 style="text-align:center;">${user.error}</h3>
+                </div>`);
+                $('.preloader').css("display", "none");
+            }
+
+            // creating timetable
+            console.log(user);
+            hours = [];
+            let i, j;
+            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0]) + 1; i++) {
+                for (j = 0; j < 2; j++) {
+                    hours.push(i + ":" + (j === 0 ? "00" : 30 * j));
+                }
+            }
+
+            hours.pop();
+            {#hours.shift();#}
+
+            // building hours column
+            for (let i = 0; i < hours.length; i++) {
+                $(".timetable-hours").append(`
+                    <div class="grid-item">
+                        ${hours[i]} - ${hours[i + 1] ? hours[i + 1] : ''}
+                    </div>
+                `)
+            }
+
+            // getting list of days
+            days = getDates(new Date(), new Date().addDays(5));
+            for (let day of days) {
+                $('.timetable').append(`<div class="timetable-column ${day.toString().slice(0, 3)}">
+                    <div class="grid-item">${day.toString().slice(0, 3)}</div>
+                </div>`);
+            }
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
+            for (let day of getDates(new Date(), new Date().addDays(5))) {
+                let cells = 0;
+                let is_pending = false;
+                for (let hour of hours) {
+                    let gridCell = '';
+                    let hour_ = new Date(day);
+
+                    hour_.setHours(parseInt(hour.split(':')[0]));
+                    hour_.setMinutes(hour.split(':')[1]);
+
+                    let bookingData = getBooking(day, hour_, bookings);
+                    if (bookingData[0] || cells >= 1) {
+                        if (cells === 0) {
+                            is_pending = false;
+
+                            cells = (bookingData[1].lesson_booking.lesson.minutes / 30) - 1;
+                            console.log(bookingData[1].status);
+                            if (bookingData[1].status === 'pending') {
+                                is_pending = true;
+                            }
+                        } else {
+                            cells--;
+                        }
+                        if (bookingData[1] && bookingData[1].status === 'pending' || is_pending) {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-pending"></div>
+                            </div>
+                            `;
+                        } else {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-booked"></div>
+                            </div>
+                            `;
+                        }
+
+                    } else {
+                        gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-vacant"></div>
+                            </div>
+                        `;
+                    }
+
+                    $(`.${day.toString().slice(0, 3)}`).append(gridCell);
+
+                }
+            }
+
+        });
+
+
+        $('body').on('click', '.teacher-course-item', function () {
+            {#console.log("Lesson: ", lessons[$(this).data('id')]);#}
+            let course = lessons[$(this).data('id')];
+
+            // inserting some texts...
+            $(".bottom-modal").css('display', 'block');
+            $('#bottom-modal-name').text(course.name);
+            $('#bottom-modal-duration').text(`${course.minutes} мин`);
+            $('#bottom-modal-price').text(`{{ text.keywords.price }}: ${course.price}`);
+            $('#lesson_id').val(course.id);
+
+
+            // clearing selects
+            $("#lesson_day").html('');
+            $("#lesson_time").html('');
+
+            // inserting data into selects
+            for (let day of days) {
+                $("#lesson_day").append(`<option value="${day}">${day.toString().slice(0, 10)}</option>`)
+            }
+
+            for (let hour of hours) {
+                $("#lesson_time").append(`<option value="${hour}">${hour}</option>`)
+            }
+
+
+        });
+        APIRequest(`/api/v1/users/{{ user_id }}/courses/?lang={{ current_lang }}`, function (data) {
+                    let coursesHtml = '';
+                    let course_types = [];
+                    lessons = data;
+
+                    let counter = 0;
+                    for (let course of data) {
+                        course_types.push(course.lesson_type.course_type.name);
+                        coursesHtml += `
+                        <div class="teacher-course-item" data-id="${counter}">
+                            <h5 style="font-weight:200;">${course.name} <span style="font-weight:600;">${course.price}</span></h5>
+                        </div>
+                        `;
+                        counter++;
+                    }
+                    let course_types_html = '';
+                    course_types = new Set(course_types);
+                    for (let course_type of course_types) {
+                        course_types_html += `
+                            <div class="">
+                                <h4>${course_type}</h4>
+                            </div>`
+                    }
+
+
+                    let teacher = '';
+                    if (user.profile.is_teacher) {
+                        teacher = '{{ text.keywords.teacher }}';
+                    } else {
+                        teacher = "{{ text.keywords.user }}";
+                    }
+
+                    $('.preloader').css('display', 'none');
+                    $('footer').css('position', "relative");
+
+                    $('.main-content').html(`
+                        <div class="user-view">
+                            <div class="video-view">
+                                <video controls class="user-preview-video">
+                                    <source src="${user.profile.video}">
+                                </video>
+                            </div>
+                            <div class="mt-3 user-view-overview">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="user-avatar">
+                                            <img src="${user.profile.avatar}">
+                                        </div>
+                                        <h6 class="disabled mt-2">{{ text.keywords.last_login }}: ${user.last_login.toString().replace('T', ' ').replace('Z', '').slice(0, 19)}</h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <h3>${user.first_name} ${user.last_name}</h3>
+                                        <h5 class="disabled">${teacher}</h5>
+                                        <h5 class="disabled">${user.profile.location}</h5>
+                                        <h5>{{ text.keywords.teaches }}</h5>
+                                        <div class="mb-5 teacher-courses-list">
+                                            ${course_types_html}
+                                        </div>
+                                    </div>
+                                    <div class="col-2" style="text-align:right!important">
+                                        <div style="margin-right:10px;">
+                                            <span style="color:#fec400;">
+                                                ${user.profile.rating} <i class="fa fa-star" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="p-4">
+                                    <h5>{{ text.keywords.about_me }}</h5>
+                                    <p>${user.profile.bio}</p>
+                                    <br>
+                                    <h5>{{ text.profile.completed_lessons }}: <span id="completed-lessons-counter"></span></h5>
+                                </div>
+                                <hr>
+                                <div>
+                                    <h5>{{ text.keywords.teaches }}</h5>
+                                    <div>${coursesHtml}</div>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                }
+            );
+        });
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/lessons/?teacher=true', function (upcoming_lessons) {
+            let completed_lessons_counter = 0;
+
+            for (let lesson of upcoming_lessons) {
+                if (lesson.is_completed) {
+                    completed_lessons_counter++;
+                }
+
+            }
+
+            $('#completed-lessons-counter').text(completed_lessons_counter);
+        });
+
+
+
+        $('.pointer').click(function () {
+            $('.bottom-modal').css('display', 'none');
+        });
+    </script>
+{% endblock %}

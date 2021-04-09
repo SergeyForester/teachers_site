@@ -1,0 +1,16 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    
+    <div class="container mt-3">
+        <form class="background-white container-radius" action="#" method="post">
+            {% csrf_token %}
+            <h5>Lesson confirmation</h5>
+            <div class="form-group">
+                <label for="">Did the lesson take place?</label>
+                <input type="checkbox" name="finished">
+            </div>
+            <button class="btn btn-red" type="submit">{{ text.keywords.save }}</button>
+        </form>
+    </div>
+    
+{% endblock %}

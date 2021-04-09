@@ -1,0 +1,216 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-10 mb-2">
+                <div class="background-white container-radius">
+                    <h5>{{ text.profile.the_preliminary_cost_of_using_system }}: <span id="cost"></span> &#8381;</h5>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 col-lg-2 mb-2">
+                <div class="background-white container-radius">
+                    <button class="btn-info btn lessons">{{ text.keywords.your_courses }}</button>
+                </div>
+
+            </div>
+            <div class="col-12 col-md-7 col-lg-7">
+                <div class="background-white container-radius">
+                    <h6>{{ text.profile.upcoming_lessons }} - <span id="upcoming-lessons-counter"></span></h6>
+                    <div class="upcoming_lessons">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-5 col-lg-5">
+                <div class="background-white container-radius ">
+                    <h5>{{ text.keywords.timetable }}</h5>
+                    <div class="timetable">
+                        <div class="timetable-column timetable-hours">
+                            <div class="grid-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="bottom-modal background-white container-radius" style="display: none">
+        <div style="text-align: right" class="pointer">
+            <i class="fa fa-times"></i>
+        </div>
+        <div class="container">
+            <div class="courses mb-5"></div>
+
+            <button class="btn btn-primary new-lesson">{{ text.keywords.new }} {{ text.keywords.lesson|lower }}</button>
+            <div id="new-lesson" class="mt-3" style="display: none">
+                <h5>{{ text.keywords.new }} {{ text.keywords.lesson|lower }}</h5>
+                <form action="/api/v1/users/{{ user_id }}/courses/?course_type=true&redirect=true" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    {{ lesson_form.as_p }}
+                    <button class="btn btn-primary">{{ text.keywords.save }}</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $('.new-lesson').click(function () {
+            $('#new-lesson').toggle();
+        });
+
+        APIRequest('/api/v1/users/{{ user_id }}/courses/', function (courses) {
+            for (let course of courses) {
+                console.log(course)
+                $('.courses').append(`
+                    <div class="list-item flex-block">
+                        <div class="flex-left">
+                            <h7 style="width: 100%">${course.lesson_type.course_type.name}</h7>
+                            <h6 style="width: 100%">${course.name}, ${course.price}&#8381</h6>
+                        </div>
+                        <div class="flex-right">
+                            <span onclick="sendDelete('/api/v1/users/{{ user_id }}/courses/${course.id}/?redirect=true')">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+               `);
+            }
+        });
+
+        APIRequest('/api/v1/management/cost_of_using/?user={{ user_id }}', function (data) {
+            $('#cost').text(data.value);
+        });
+
+        APIRequest('/api/v1/users/{{ user_id }}/lessons/?teacher=true', function (upcoming_lessons) {
+            let upcoming_lessons_html = ``;
+            let upcoming_lessons_counter = 0;
+            let completed_lessons_counter = 0;
+
+            for (let lesson of upcoming_lessons) {
+                if (lesson.is_completed) {
+                    completed_lessons_counter++;
+                } else {
+                    upcoming_lessons_counter++;
+                    upcoming_lessons_html += `
+                    <div class="list-item">
+                        <h7 style="width: 100%">${lesson.user.first_name} ${lesson.user.last_name}</h7>
+                        <h6 style="width: 100%">${lesson.lesson.name}, ${lesson.datetime.replace('T', ' ').replace('Z', '')}</h6>
+                    </div>
+                `
+                }
+            }
+
+            $('.upcoming_lessons').html(upcoming_lessons_html);
+            $('#upcoming-lessons-counter').text(upcoming_lessons_counter);
+            $('#completed-lessons-counter').text(completed_lessons_counter);
+        });
+    </script>
+    <script>
+        let hours = [];
+        let lessons = [];
+
+        APIRequest('/api/v1/users/{{ user_id }}/', function (user) {
+            let i, j;
+            for (i = parseInt(user.profile.work_day_start.split(':')[0]); i < parseInt(user.profile.work_day_end.split(':')[0]) + 1; i++) {
+                for (j = 0; j < 2; j++) {
+                    hours.push(i + ":" + (j === 0 ? "00" : 30 * j));
+                }
+            }
+
+            hours.pop();
+
+            // building hours column
+            for (let i = 0; i < hours.length; i++) {
+                $(".timetable-hours").append(`
+                    <div class="grid-item">
+                        ${hours[i]} - ${hours[i + 1] ? hours[i + 1] : ''}
+                    </div>
+                `)
+            }
+
+            // getting list of days
+            days = getDates(new Date(), new Date().addDays(5));
+            for (let day of days) {
+                $('.timetable').append(`<div class="timetable-column ${day.toString().slice(0, 3)}">
+                    <div class="grid-item">${day.toString().slice(0, 3)}</div>
+                </div>`);
+            }
+
+        });
+
+
+        APIRequest('/api/v1/users/{{ user_id }}/bookings/', function (bookings) {
+            let timeZoneOffset = new Date().getTimezoneOffset() / 60;
+            console.log(timeZoneOffset);
+
+            for (let day of getDates(new Date(), new Date().addDays(5))) {
+                let cells = 0;
+                let is_pending = false;
+                for (let hour of hours) {
+                    let gridCell = '';
+                    let hour_ = new Date(day);
+
+                    hour_.setHours(parseInt(hour.split(':')[0]));
+                    hour_.setMinutes(hour.split(':')[1]);
+
+                    let bookingData = getBooking(day, hour_, bookings);
+                    if (bookingData[0] || cells >= 1) {
+                        if (cells === 0) {
+                            is_pending = false;
+
+                            cells = (bookingData[1].lesson_booking.lesson.minutes / 30) - 1;
+                            console.log(bookingData[1].status);
+                            if (bookingData[1].status === 'pending') {
+                                is_pending = true;
+                            }
+                        } else {
+                            cells--;
+                        }
+                        if (bookingData[1] && bookingData[1].status === 'pending' || is_pending) {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-pending"></div>
+                            </div>
+                            `;
+                        } else {
+                            gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-booked"></div>
+                            </div>
+                            `;
+                        }
+
+                    } else {
+                        gridCell = `
+                            <div class="grid-item">
+                                <div class="grid-item-vacant"></div>
+                            </div>
+                        `;
+                    }
+
+                    $(`.${day.toString().slice(0, 3)}`).append(gridCell);
+
+                }
+            }
+        });
+        $('.lessons').click(function () {
+            $('.bottom-modal').css('display', 'block');
+
+        });
+        $('.pointer').click(function () {
+            $('.bottom-modal').css('display', 'none');
+        });
+        document.getElementById('id_places').readOnly = true;
+        $('#id_is_group').change(function () {
+            console.log(document.getElementById('id_is_group').checked);
+            if (document.getElementById('id_is_group').checked) {
+                document.getElementById('id_places').readOnly = false;
+            } else {
+                document.getElementById('id_places').readOnly = true;
+            }
+        });
+    </script>
+{% endblock %}

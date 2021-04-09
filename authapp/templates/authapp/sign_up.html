@@ -1,0 +1,11 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <div  style="padding: 20px" class="container mt-5 background-white container-radius">
+        <h5>{{ text.auth.sign_up }}</h5>
+        <form method="post" action="{% url 'auth:sign_up' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{{ text.keywords.submit }}</button>
+        </form>
+    </div>
+{% endblock %}

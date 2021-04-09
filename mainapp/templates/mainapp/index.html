@@ -1,0 +1,90 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class="alert alert-danger"
+                    {% else %}
+                        class="alert alert-info"
+                    {% endif %}
+                        role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="message-main pb-3 pt-5">
+        <div class="message-main-text pt-5">
+            {{ text.main.main_message }}
+        </div>
+        <div class="message-main-input">
+            <form action="{% url 'main:teachers_search' %}" class="pb-3" id="course-form" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="course" autocomplete="off" id="course-input"
+                           placeholder="{{ text.main.input_message }}"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="hidden" id="value" name="value" value="">
+                    <div class="input-group-append">
+                        <button class="input-group-text">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="hints-block">
+                </div>
+            </form>
+        </div>
+    </div>
+    {% if request.user.is_authenticated %}
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-6 mt-3 background-white container-radius">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Бронирование уроков</h4>
+                            <h5 class="">С помощью нашей системы бронирования уроков, вы сможете заказать нужный урок,
+                                всего
+                                за
+                                пару
+                                кликов!</h5>
+                        </div>
+                        <div class="col-12">
+                            <img src="{% static 'img/booking_timetable.png' %}"
+                                 style="width: 100%;height: 100%; object-fit: cover" alt="">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-6 mt-3 background-white container-radius">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>История занятий</h4>
+                            <h5 class=""> В вашем профиле будут доступны все инcтрументы для контроля ваших занятий</h5>
+                        </div>
+                        <div class="col-12">
+                            <img src="{% static 'img/lessons_statistics.png' %}"
+                                 style="width: 100%;height: 100%; object-fit: cover" alt="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="#courses_data" style="display: none">{{ courses }}</div>
+    <div id="#lang" style="display: none">{{ current_lang }}</div>
+    <script>
+        APIRequest(`/api/v1/courses/?lang={{ current_lang }}`, function (data) {
+            let data_ = [];
+            for (let i = 0; i < data.length; i++) {
+                data_.push(data[i].item);
+            }
+            console.log(data);
+            console.log(data_);
+            autocomplete(document.getElementById("course-input"), data_, '#course-form', '#value', data);
+        })
+    </script>
+{% endblock %}
